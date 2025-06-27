@@ -1,0 +1,38 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: archive-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/sejong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: {password}
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # ?? validate, create, create-drop
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    properties:
+      hibernate:
+        format_sql: true
+
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+    enabled: true
+
+
+jwt:
+  secret: apfhdapfhdrnldudnsapxkahddldpdydnglglwkrdmsehffhqustlsgksapxkahd
+  expiration-time: 3600000 # ??? ?? ?? ??: 1?? (???)
+  refresh-expiration-time: 604800000 # ???? ?? ?? ??: 7? (???)
