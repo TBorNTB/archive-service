@@ -14,7 +14,7 @@ public class Filepath {
         return new Filepath(path);
     }
 
-    public String getPath() {
+    public String path() {
         return path;
     }
 
