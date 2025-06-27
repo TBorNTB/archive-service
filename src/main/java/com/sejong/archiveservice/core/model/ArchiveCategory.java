@@ -1,4 +1,4 @@
-package com.sejong.archiveservice.core;
+package com.sejong.archiveservice.core.model;
 
 public enum ArchiveCategory {
     MT("MT"),
