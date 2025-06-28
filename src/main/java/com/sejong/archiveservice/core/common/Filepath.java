@@ -1,6 +1,8 @@
 package com.sejong.archiveservice.core.common;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Objects;
 
 public class Filepath {
@@ -10,6 +12,7 @@ public class Filepath {
         this.path = path;
     }
 
+    @JsonCreator
     public static Filepath of(String path) {
         return new Filepath(path);
     }
@@ -27,6 +30,7 @@ public class Filepath {
     }
 
     @Override
+    @JsonValue
     public int hashCode() {
         return Objects.hash(path);
     }

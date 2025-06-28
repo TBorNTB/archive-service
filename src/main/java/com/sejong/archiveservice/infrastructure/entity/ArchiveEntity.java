@@ -48,7 +48,7 @@ public class ArchiveEntity {
 
     @ElementCollection
     @CollectionTable(name = "archive_user_ids", joinColumns = @JoinColumn(name = "archive_id"))
-    @Column(name = "user_id")
+    @Column(name = "archive_user_ids")
     private List<Long> userIds = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

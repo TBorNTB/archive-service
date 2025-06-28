@@ -1,85 +1,81 @@
 package com.sejong.archiveservice.core.model;
 
+import com.sejong.archiveservice.core.util.ArchiveIDGenerator;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.sejong.archiveservice.core.common.Filepath;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
+@Getter
+@EqualsAndHashCode
+@ToString
 public class Archive {
-    private Long id;
-    private String title;
+    private ArchiveID id;
+
+    private Content content;
+
     private Filepath thumbnailPath;
     private Filepath attachedFilePath;
-    private String summary;
-    private String content;
+
     private UserId writerId;
     private List<UserId> userIds;
-    private ArchiveCategory category;
-    private List<String> tags;
+    private List<Tag> tags;
+
     private int likes;
     private int view;
     private LocalDate createdAt;
 
-    public Archive() {
-        this.userIds = new ArrayList<>();
-        this.tags = new ArrayList<>();
-        this.likes = 0;
-        this.view = 0;
-        this.createdAt = LocalDate.now();
-    }
-
-    public Archive(String title, UserId writerId, ArchiveCategory category) {
-        this();
-        this.title = title;
-        this.writerId = writerId;
-        this.category = category;
-    }
-
-    // Getters
-    public Long getId() { return id; }
-    public String getTitle() { return title; }
-    public Filepath getThumbnailPath() { return thumbnailPath; }
-    public Filepath getAttachedFilePath() { return attachedFilePath; }
-    public String getSummary() { return summary; }
-    public String getContent() { return content; }
-    public UserId getWriterId() { return writerId; }
-    public List<UserId> getUserIds() { return userIds; }
-    public ArchiveCategory getCategory() { return category; }
-    public List<String> getTags() { return tags; }
-    public int getLikes() { return likes; }
-    public int getView() { return view; }
-    public LocalDate getCreatedAt() { return createdAt; }
-
-    // Business methods
-    public void updateContent(String summary, String content) {
-        this.summary = summary;
+    @Builder(toBuilder = true)
+    private Archive(ArchiveID id, Content content, Filepath thumbnailPath, Filepath attachedFilePath,
+                    UserId writerId, List<UserId> userIds, List<Tag> tags, int likes, int view, LocalDate createdAt) {
+        this.id = id;
         this.content = content;
-    }
-
-    public void addTag(String tag) {
-        if (!this.tags.contains(tag)) {
-            this.tags.add(tag);
-        }
-    }
-
-    public void removeTag(String tag) {
-        this.tags.remove(tag);
-    }
-
-    public void incrementLikes() {
-        this.likes++;
-    }
-
-    public void incrementView() {
-        this.view++;
-    }
-
-    public void setThumbnailPath(Filepath thumbnailPath) {
         this.thumbnailPath = thumbnailPath;
+        this.attachedFilePath = attachedFilePath;
+        this.writerId = writerId;
+        this.userIds = userIds;
+        this.tags = tags;
+        this.likes = likes;
+        this.view = view;
+        this.createdAt = createdAt;
     }
 
-    public void setAttachedFilePath(Filepath attachedFilePath) {
-        this.attachedFilePath = attachedFilePath;
+    public static Archive of(ArchiveID id, Content content, Filepath thumbnailPath, Filepath attachedFilePath,
+                             UserId writerId, List<UserId> userIds, List<Tag> tags, int likes, int view, LocalDate createdAt) {
+        return Archive.builder()
+                .id(id)
+                .content(content)
+                .thumbnailPath(thumbnailPath)
+                .attachedFilePath(attachedFilePath)
+                .writerId(writerId)
+                .userIds(userIds)
+                .tags(tags)
+                .likes(likes)
+                .view(view)
+                .createdAt(createdAt)
+                .build();
     }
+
+    public static Archive create(Content content, Filepath thumbnailPath, Filepath attachedFilePath,
+                                 UserId writerId, List<UserId> userIds, List<Tag> tags, int likes, int view) {
+        return Archive.builder()
+                .id(ArchiveIDGenerator.generate())
+                .content(content)
+                .content(content)
+                .thumbnailPath(thumbnailPath)
+                .attachedFilePath(attachedFilePath)
+                .writerId(writerId)
+                .userIds(userIds)
+                .tags(tags)
+                .likes(0)
+                .view(0)
+                .createdAt(LocalDate.now())
+                .build();
+    }
+
 }
