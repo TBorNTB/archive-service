@@ -10,5 +10,10 @@ public interface ArchiveRepository {
      */
     Archive save(Archive archive);
 
-
+    /**
+     *
+     * @param archiveId archive id
+     * @return 해당 archiveId를 가진 archive 존재 여부
+     */
+    boolean existsArchive(Long archiveId);
 }

@@ -2,7 +2,11 @@ package com.sejong.archiveservice.core.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
+@Getter
+@EqualsAndHashCode
 public class ArchiveID {
     private final String value;
 
@@ -18,7 +22,7 @@ public class ArchiveID {
 
     private void validate(String value) {
         if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("Invalid user ID");
+            throw new IllegalArgumentException("Invalid archive ID");
         }
     }
 

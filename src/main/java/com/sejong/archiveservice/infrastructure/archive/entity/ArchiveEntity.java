@@ -1,8 +1,11 @@
-package com.sejong.archiveservice.infrastructure.entity;
+package com.sejong.archiveservice.infrastructure.archive.entity;
 
 import com.sejong.archiveservice.core.model.ArchiveCategory;
+import com.sejong.archiveservice.core.model.ArchiveID;
+import com.sejong.archiveservice.infrastructure.archive.converter.ArchiveIDConverter;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,8 +28,9 @@ import lombok.NoArgsConstructor;
 public class ArchiveEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Convert(converter = ArchiveIDConverter.class)
+    @Column(columnDefinition = "binary(16)")
+    private ArchiveID id;
 
     @Column(nullable = false)
     private String title;
