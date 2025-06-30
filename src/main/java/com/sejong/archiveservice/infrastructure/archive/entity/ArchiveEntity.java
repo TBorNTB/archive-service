@@ -1,17 +1,13 @@
 package com.sejong.archiveservice.infrastructure.archive.entity;
 
-import com.sejong.archiveservice.core.model.ArchiveCategory;
-import com.sejong.archiveservice.core.model.ArchiveID;
 import com.sejong.archiveservice.infrastructure.archive.converter.ArchiveIDConverter;
+import com.sejong.archiveservice.infrastructure.archive.embeddable.ContentEmbeddable;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
@@ -26,14 +22,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ArchiveEntity {
-
     @Id
     @Convert(converter = ArchiveIDConverter.class)
-    @Column(columnDefinition = "binary(16)")
-    private ArchiveID id;
+    @Column(name = "archive_id", columnDefinition = "VARCHAR(255)")
+    private String id;
 
-    @Column(nullable = false)
-    private String title;
+    @Embedded
+    private ContentEmbeddable content;
 
     @Column(name = "thumbnail_path")
     private String thumbnailPath;
@@ -41,23 +36,13 @@ public class ArchiveEntity {
     @Column(name = "attached_file_path")
     private String attachedFilePath;
 
-    @Column(columnDefinition = "TEXT")
-    private String summary;
-
-    @Column(columnDefinition = "TEXT")
-    private String content; // TODO(sigmaith): List<Block>으로 바꿀지 고민.
-
     @Column(name = "writer_id", nullable = false)
     private Long writerId;
 
     @ElementCollection
-    @CollectionTable(name = "archive_user_ids", joinColumns = @JoinColumn(name = "archive_id"))
+    @CollectionTable(name = "archive_participant_ids", joinColumns = @JoinColumn(name = "archive_id"))
     @Column(name = "archive_user_ids")
-    private List<Long> userIds = new ArrayList<>();
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ArchiveCategory category;
+    private List<Long> participantIds = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "archive_tags", joinColumns = @JoinColumn(name = "archive_id"))

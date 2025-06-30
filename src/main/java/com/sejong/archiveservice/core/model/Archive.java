@@ -1,11 +1,10 @@
 package com.sejong.archiveservice.core.model;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import com.sejong.archiveservice.core.common.Filepath;
 import com.sejong.archiveservice.core.util.ArchiveIDGenerator;
-
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,7 +19,7 @@ public class Archive {
     private Content content;
 
     private Filepath thumbnailPath;
-    private Filepath attachedFilePath;
+    private List<Filepath> attachedFilePaths;
 
     private UserId writerId;
     private List<UserId> participantIds;
@@ -31,12 +30,12 @@ public class Archive {
     private LocalDate createdAt;
 
     @Builder(toBuilder = true)
-    private Archive(ArchiveID id, Content content, Filepath thumbnailPath, Filepath attachedFilePath,
+    private Archive(ArchiveID id, Content content, Filepath thumbnailPath, List<Filepath> attachedFilePaths,
                     UserId writerId, List<UserId> participantIds, List<Tag> tags, int likes, int view, LocalDate createdAt) {
         this.id = id;
         this.content = content;
         this.thumbnailPath = thumbnailPath;
-        this.attachedFilePath = attachedFilePath;
+        this.attachedFilePaths = attachedFilePaths;
         this.writerId = writerId;
         this.participantIds = participantIds;
         this.tags = tags;
@@ -45,13 +44,13 @@ public class Archive {
         this.createdAt = createdAt;
     }
 
-    public static Archive of(ArchiveID id, Content content, Filepath thumbnailPath, Filepath attachedFilePath,
+    public static Archive of(ArchiveID id, Content content, Filepath thumbnailPath, List<Filepath> attachedFilePaths,
                              UserId writerId, List<UserId> participantIds, List<Tag> tags, int likes, int view, LocalDate createdAt) {
         return Archive.builder()
                 .id(id)
                 .content(content)
                 .thumbnailPath(thumbnailPath)
-                .attachedFilePath(attachedFilePath)
+                .attachedFilePaths(attachedFilePaths)
                 .writerId(writerId)
                 .participantIds(participantIds)
                 .tags(tags)
@@ -61,14 +60,14 @@ public class Archive {
                 .build();
     }
 
-    public static Archive create(Content content, Filepath thumbnailPath, Filepath attachedFilePath,
-                                 UserId writerId, List<UserId> participantIds, List<Tag> tags, int likes, int view) {
+    public static Archive create(Content content, UserId writerId,
+                                 List<UserId> participantIds, List<Tag> tags) {
         return Archive.builder()
                 .id(ArchiveIDGenerator.generate())
                 .content(content)
                 .content(content)
-                .thumbnailPath(thumbnailPath)
-                .attachedFilePath(attachedFilePath)
+                .thumbnailPath(null)
+                .attachedFilePaths(new ArrayList<>())
                 .writerId(writerId)
                 .participantIds(participantIds)
                 .tags(tags)
@@ -78,4 +77,17 @@ public class Archive {
                 .build();
     }
 
+    public Archive updateThumbnailPath(Filepath thumbnailPath) {
+        return this.toBuilder()
+                .thumbnailPath(thumbnailPath)
+                .build();
+    }
+
+    public Archive updateAttachedFilePaths(Filepath filePath) {
+        List<Filepath> newPaths = new ArrayList<>(this.attachedFilePaths);
+        newPaths.add(filePath);
+        return this.toBuilder()
+                .attachedFilePaths(newPaths)
+                .build();
+    }
 }

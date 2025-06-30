@@ -1,8 +1,6 @@
-package com.sejong.archiveservice.application;
+package com.sejong.archiveservice.application.file;
 
-import com.sejong.archiveservice.application.file.PreSignedUrl;
 import com.sejong.archiveservice.core.common.Filepath;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface FileUploader {
     PreSignedUrl generatePreSignedUrl(String fileName, String contentType, String dirName);

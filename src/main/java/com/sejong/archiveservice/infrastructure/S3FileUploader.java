@@ -1,6 +1,6 @@
 package com.sejong.archiveservice.infrastructure;
 
-import com.sejong.archiveservice.application.FileUploader;
+import com.sejong.archiveservice.application.file.FileUploader;
 import com.sejong.archiveservice.application.file.PreSignedUrl;
 import com.sejong.archiveservice.core.common.Filepath;
 import java.time.Duration;

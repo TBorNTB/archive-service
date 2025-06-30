@@ -1,10 +1,10 @@
 package com.sejong.archiveservice.application.archive.controller;
 
-import com.sejong.archiveservice.application.FileUploader;
 import com.sejong.archiveservice.application.archive.dto.ArchiveReqDto;
 import com.sejong.archiveservice.application.archive.dto.ArchiveResDto;
 import com.sejong.archiveservice.application.archive.service.ArchiveService;
 import com.sejong.archiveservice.application.file.FileUploadRequest;
+import com.sejong.archiveservice.application.file.FileUploader;
 import com.sejong.archiveservice.application.file.PreSignedUrl;
 import com.sejong.archiveservice.core.model.Archive;
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,6 +50,15 @@ public class ArchiveController {
 
         return ResponseEntity.ok(preSignedUrl);
     }
+
+//    @PatchMapping("/{archiveId}/files")
+//    public ResponseEntity<Void> updateFileInfo(
+//            @PathVariable Long id,
+//            @RequestBody UpdateFileInfoRequest request) {
+//
+//        archiveService.updateFileInfo(id, request.getFilePath());
+//        return ResponseEntity.ok().build();
+//    }
 
 
     @GetMapping("/health")

@@ -1,6 +1,7 @@
 package com.sejong.archiveservice.infrastructure.mapper;
 
 import com.sejong.archiveservice.core.model.Archive;
+import com.sejong.archiveservice.core.model.ArchiveID;
 import com.sejong.archiveservice.infrastructure.archive.entity.ArchiveEntity;
 import lombok.experimental.UtilityClass;
 
@@ -16,7 +17,7 @@ public class ArchiveMapper {
     public static Archive toDomain(ArchiveEntity entity) {
         // TODO: ArchiveEntity -> Archive 매핑 로직
         return Archive.builder()
-                .id(entity.getId())
+                .id(ArchiveID.of(entity.getId()))
                 // 다른 필드들...
                 .build();
     }
