@@ -25,19 +25,19 @@ public class Content {
 
     private void validate(String title, String summary, String content, ArchiveCategory category) {
         if (title == null || title.isEmpty()) {
-            throw new IllegalArgumentException("title is null or empty");
+            throw new IllegalArgumentException("제목은 필수입니다.");
         }
 
         if (summary == null || summary.isEmpty()) {
-            throw new IllegalArgumentException("summary is null or empty");
+            throw new IllegalArgumentException("요약은 필수입니다.");
         }
 
         if (content == null || content.isEmpty()) {
-            throw new IllegalArgumentException("content is null or empty");
+            throw new IllegalArgumentException("내용은 필수입니다.");
         }
 
         if (category == null) {
-            throw new IllegalArgumentException("category is null");
+            throw new IllegalArgumentException("카테고리는 필수입니다.");
         }
     }
 }

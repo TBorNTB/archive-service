@@ -23,6 +23,6 @@ public enum ArchiveCategory {
         return Arrays.stream(ArchiveCategory.values())
                 .filter(c -> c.description.equals(description))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("해당 카테고리가 없습니다"));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
     }
 }
