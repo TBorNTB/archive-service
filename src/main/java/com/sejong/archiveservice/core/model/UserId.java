@@ -10,4 +10,6 @@ public class UserId {
     public static UserId of(Long value) {
         return new UserId(value);
     }
+
+    public Long userId() { return value; }
 }

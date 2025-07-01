@@ -1,19 +1,17 @@
 package com.sejong.archiveservice.infrastructure.archive.entity;
 
-import com.sejong.archiveservice.infrastructure.archive.converter.ArchiveIDConverter;
+import com.sejong.archiveservice.infrastructure.archive.converter.FilepathsConverter;
 import com.sejong.archiveservice.infrastructure.archive.embeddable.ContentEmbeddable;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,10 +20,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ArchiveEntity {
+
     @Id
-    @Convert(converter = ArchiveIDConverter.class)
-    @Column(name = "archive_id", columnDefinition = "VARCHAR(255)")
-    private String id;
+    @Column(name = "archive_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Embedded
     private ContentEmbeddable content;
@@ -34,20 +33,19 @@ public class ArchiveEntity {
     private String thumbnailPath;
 
     @Column(name = "attached_file_path")
+    @Convert(converter = FilepathsConverter.class)
     private String attachedFilePath;
 
     @Column(name = "writer_id", nullable = false)
     private Long writerId;
 
-    @ElementCollection
-    @CollectionTable(name = "archive_participant_ids", joinColumns = @JoinColumn(name = "archive_id"))
-    @Column(name = "archive_user_ids")
-    private List<Long> participantIds = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "archive_tags", joinColumns = @JoinColumn(name = "archive_id"))
+    @Column(name = "archive_user_ids")
+    private String participantIds;
+
+
     @Column(name = "tag")
-    private List<String> tags = new ArrayList<>();
+    private String tags;
 
     @Column(name = "likes", nullable = false)
     private int likes = 0;
@@ -57,4 +55,19 @@ public class ArchiveEntity {
 
     @Column(name = "created_at", nullable = false)
     private LocalDate createdAt;
+
+    @Builder
+    private ArchiveEntity(long id, ContentEmbeddable content, String thumbnailPath, String attachedFilePath,
+                         Long writerId, String participantIds, String tags, int likes, int view, LocalDate createdAt) {
+        this.id = id;
+        this.content = content;
+        this.thumbnailPath = thumbnailPath;
+        this.attachedFilePath = attachedFilePath;
+        this.writerId = writerId;
+        this.participantIds = participantIds;
+        this.tags = tags;
+        this.likes = likes;
+        this.view = view;
+        this.createdAt = createdAt;
+    }
 }

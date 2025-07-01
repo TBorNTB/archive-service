@@ -3,7 +3,7 @@ package com.sejong.archiveservice.infrastructure.archive.repository;
 import com.sejong.archiveservice.core.model.Archive;
 import com.sejong.archiveservice.core.repository.ArchiveRepository;
 import com.sejong.archiveservice.infrastructure.archive.entity.ArchiveEntity;
-import com.sejong.archiveservice.infrastructure.mapper.ArchiveMapper;
+import com.sejong.archiveservice.infrastructure.archive.mapper.ArchiveMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
