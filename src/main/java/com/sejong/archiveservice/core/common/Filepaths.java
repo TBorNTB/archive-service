@@ -12,6 +12,9 @@ public class Filepaths {
     }
 
     public static Filepaths of(String paths) {
+        if (paths == null) {
+            return null;
+        }
         String[] splits = paths.split(",");
         List<Filepath> filePaths = Arrays.stream(splits).map(Filepath::of).toList();
         return new Filepaths(filePaths);

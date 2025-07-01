@@ -57,9 +57,8 @@ public class ArchiveEntity {
     private LocalDate createdAt;
 
     @Builder
-    private ArchiveEntity(long id, ContentEmbeddable content, String thumbnailPath, String attachedFilePath,
+    private ArchiveEntity(ContentEmbeddable content, String thumbnailPath, String attachedFilePath,
                          Long writerId, String participantIds, String tags, int likes, int view, LocalDate createdAt) {
-        this.id = id;
         this.content = content;
         this.thumbnailPath = thumbnailPath;
         this.attachedFilePath = attachedFilePath;

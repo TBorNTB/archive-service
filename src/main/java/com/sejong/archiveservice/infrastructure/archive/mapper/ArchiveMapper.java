@@ -37,10 +37,12 @@ public class ArchiveMapper {
     public static ArchiveEntity toEntity(Archive archive) {
         return ArchiveEntity.builder()
                 .content(ContentEmbeddable.of(archive.getContent()))
-                .thumbnailPath(archive.getThumbnailPath().path())
-                .attachedFilePath(archive.getAttachedFilePaths().toString())
+                .thumbnailPath(archive.getThumbnailPath() == null ? null : archive.getThumbnailPath().path())
+                .attachedFilePath(archive.getAttachedFilePaths() == null ? null : archive.getAttachedFilePaths().toString())
                 .writerId(archive.getWriterId().userId())
                 .participantIds(archive.getParticipantIds().toString())
+                .tags(archive.getTags().toString())
+                .createdAt(archive.getCreatedAt())
                 .build();
     }
 }

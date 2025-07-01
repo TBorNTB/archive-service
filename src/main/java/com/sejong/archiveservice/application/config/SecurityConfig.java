@@ -21,9 +21,9 @@ public class SecurityConfig {
                 .requestMatchers("/v3/api-docs/**").permitAll()
                 .requestMatchers("/swagger-resources/**").permitAll()
                 .requestMatchers("/webjars/**").permitAll()
-                // 헬스체크 및 테스트 엔드포인트 허용
-                .requestMatchers("/archive/health").permitAll()
-                .requestMatchers("/archive/test").permitAll()
+                // 엔드포인트 허용
+                .requestMatchers("/archive/**").permitAll()
+
                 // 액추에이터 엔드포인트 허용
                 .requestMatchers("/actuator/**").permitAll()
                 // 나머지는 인증 필요
