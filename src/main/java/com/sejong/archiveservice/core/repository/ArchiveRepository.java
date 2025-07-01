@@ -16,4 +16,13 @@ public interface ArchiveRepository {
      * @return 해당 archiveId를 가진 archive 존재 여부
      */
     boolean existsArchive(Long archiveId);
+
+    /**
+     *
+     * @param archiveId archive id
+     * @return 해당 Archive 객체
+     */
+    Archive findBy(Long archiveId);
+
+    Archive update(Archive archive);
 }

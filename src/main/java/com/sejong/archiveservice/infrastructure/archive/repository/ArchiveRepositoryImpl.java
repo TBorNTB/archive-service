@@ -20,7 +20,19 @@ public class ArchiveRepositoryImpl implements ArchiveRepository {
 
     @Override
     public boolean existsArchive(Long archiveId) {
-        // TODO: 구현
-        return false;
+        return archiveJpaRepository.existsById(archiveId);
+    }
+
+    @Override
+    public Archive findBy(Long archiveId) {
+        ArchiveEntity archiveEntity = archiveJpaRepository.findById(archiveId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아카이브 ID"));
+        return ArchiveMapper.toDomain(archiveEntity);
+    }
+
+    @Override
+    public Archive update(Archive archive) {
+        ArchiveEntity entity = ArchiveMapper.toEntity(archive);
+        return ArchiveMapper.toDomain(archiveJpaRepository.save(entity));
     }
 }

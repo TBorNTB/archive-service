@@ -54,4 +54,9 @@ public class Archive {
                 .createdAt(LocalDate.now())
                 .build();
     }
+
+    public void updateFileInfo(Filepath filepath, Filepaths filepaths) {
+        this.thumbnailPath = filepath;
+        this.attachedFilePaths = filepaths;
+    }
 }

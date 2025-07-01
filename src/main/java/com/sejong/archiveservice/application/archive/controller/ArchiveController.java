@@ -2,6 +2,7 @@ package com.sejong.archiveservice.application.archive.controller;
 
 import com.sejong.archiveservice.application.archive.dto.ArchiveReqDto;
 import com.sejong.archiveservice.application.archive.dto.ArchiveResDto;
+import com.sejong.archiveservice.application.archive.dto.UpdateFileInfoReqDto;
 import com.sejong.archiveservice.application.archive.service.ArchiveService;
 import com.sejong.archiveservice.application.file.FileUploadRequest;
 import com.sejong.archiveservice.application.file.FileUploader;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +42,7 @@ public class ArchiveController {
             @PathVariable("archiveId") Long archiveId,
             @RequestBody FileUploadRequest request) {
 
-//        archiveService.validateArchiveExists(archiveId);
+        archiveService.validateArchiveExists(archiveId);
 
         PreSignedUrl preSignedUrl = fileUploader.generatePreSignedUrl(
                 request.fileName(),
@@ -51,14 +53,15 @@ public class ArchiveController {
         return ResponseEntity.ok(preSignedUrl);
     }
 
-//    @PatchMapping("/{archiveId}/files")
-//    public ResponseEntity<Void> updateFileInfo(
-//            @PathVariable Long id,
-//            @RequestBody UpdateFileInfoRequest request) {
-//
-//        archiveService.updateFileInfo(id, request.getFilePath());
-//        return ResponseEntity.ok().build();
-//    }
+    @PatchMapping("/{archiveId}/files")
+    @Operation(summary = "파일 업로드 후 파일 경로 업데이트")
+    public ResponseEntity<Void> updateFileInfo(
+            @PathVariable Long archiveId,
+            @RequestBody UpdateFileInfoReqDto request) {
+
+        archiveService.updateFileInfo(archiveId, request);
+        return ResponseEntity.ok().build();
+    }
 
 
     @GetMapping("/health")

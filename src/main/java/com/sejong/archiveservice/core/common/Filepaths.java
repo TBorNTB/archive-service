@@ -20,6 +20,10 @@ public class Filepaths {
         return new Filepaths(filePaths);
     }
 
+    public static Filepaths of(List<String> filepaths) {
+        return new Filepaths(filepaths.stream().map(Filepath::of).toList());
+    }
+
     @Override
     public String toString() {
         return filepaths.stream().map(Filepath::path).collect(Collectors.joining(","));
