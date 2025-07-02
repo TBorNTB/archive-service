@@ -18,4 +18,8 @@ public class ArchiveAssembler {
 
         return Archive.create(content, userId, userIds, reqDto.tags());
     }
+
+    public static Content toContent(ArchiveReqDto reqDto) {
+        return Content.of(reqDto.title(), reqDto.summary(), reqDto.content(), ArchiveCategory.of(reqDto.category()));
+    }
 }

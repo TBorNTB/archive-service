@@ -1,5 +1,6 @@
 package com.sejong.archiveservice.core.model;
 
+
 public class UserId {
 
     private String value;

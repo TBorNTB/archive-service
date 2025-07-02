@@ -7,15 +7,18 @@ import com.sejong.archiveservice.application.file.FileUploader;
 import com.sejong.archiveservice.core.common.Filepath;
 import com.sejong.archiveservice.core.common.Filepaths;
 import com.sejong.archiveservice.core.model.Archive;
+import com.sejong.archiveservice.core.model.UserId;
+import com.sejong.archiveservice.core.model.UserIds;
 import com.sejong.archiveservice.core.repository.ArchiveRepository;
 import com.sejong.archiveservice.infrastructure.user.UserServiceClient;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ArchiveService {
     private final ArchiveRepository archiveRepository;
     private final UserServiceClient userServiceClient;
@@ -50,6 +53,18 @@ public class ArchiveService {
         Archive archive = archiveRepository.findBy(archiveId);
         archive.updateFileInfo(Filepath.of(request.thumbnailPath()), Filepaths.of(request.attachedFilePaths()));
         archiveRepository.update(archive);
+    }
+
+    @Transactional
+    public Archive updateArchive(Long archiveId, ArchiveReqDto archiveReqDto, String writerId) {
+        Archive archive = archiveRepository.findBy(archiveId);
+        if (!archive.getWriterId().equals(UserId.of(writerId))) {
+            throw new IllegalArgumentException("아카이브 작성자만 내용을 수정할 수 있습니다.");
+        }
+        archive.update(ArchiveAssembler.toContent(archiveReqDto),
+                UserIds.of(archiveReqDto.participantIds()),
+                archiveReqDto.tags());
+        return archiveRepository.update(archive);
     }
 
     public Archive findById(Long archiveId) {

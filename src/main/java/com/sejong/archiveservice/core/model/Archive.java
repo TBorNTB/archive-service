@@ -55,6 +55,12 @@ public class Archive {
                 .build();
     }
 
+    public void update(Content content, UserIds participantIds, List<String> tags) {
+        this.content = content;
+        this.participantIds = participantIds;
+        this.tags = tags;
+    }
+
     public void updateFileInfo(Filepath filepath, Filepaths filepaths) {
         this.thumbnailPath = filepath;
         this.attachedFilePaths = filepaths;

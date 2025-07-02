@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -84,10 +85,16 @@ public class ArchiveController {
         return ResponseEntity.ok(ArchiveResDto.from(archive));
     }
 
-//    // Todo: 요청을 보낸 유저가 곧 writer 인지 검증
-//    @PutMapping("/{archiveId}")
-//    @Operation(summary = "아카이브 수정")
-//    public
+    // Todo: 요청을 보낸 유저가 곧 writer 인지 검증
+    @PutMapping("/{archiveId}")
+    @Operation(summary = "아카이브 수정")
+    public ResponseEntity<ArchiveResDto> updateArchive(@PathVariable Long archiveId, @RequestBody ArchiveReqDto archiveReqDto) {
+        String writerId = getCurrentUser().getUserId();
+        Archive archive = archiveService.updateArchive(archiveId, archiveReqDto, writerId);
+        return ResponseEntity.ok(ArchiveResDto.from(archive));
+    }
+
+
 
     private UserContext getCurrentUser() {
         return (UserContext) SecurityContextHolder.getContext()
