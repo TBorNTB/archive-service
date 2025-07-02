@@ -37,7 +37,7 @@ public class ArchiveEntity {
     private String attachedFilePath;
 
     @Column(name = "writer_id", nullable = false)
-    private Long writerId;
+    private String writerId;
 
 
     @Column(name = "archive_user_ids")
@@ -58,7 +58,7 @@ public class ArchiveEntity {
 
     @Builder
     private ArchiveEntity(ContentEmbeddable content, String thumbnailPath, String attachedFilePath,
-                         Long writerId, String participantIds, String tags, int likes, int view, LocalDate createdAt) {
+                          String writerId, String participantIds, String tags, int likes, int view, LocalDate createdAt) {
         this.content = content;
         this.thumbnailPath = thumbnailPath;
         this.attachedFilePath = attachedFilePath;

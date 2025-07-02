@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface UserServiceClient {
 
     @GetMapping("/users/{userId}/exists")
-    boolean exists(@PathVariable("userId") Long userId);
+    boolean exists(@PathVariable("userId") String userId);
 
     @PostMapping("/users/exists")
-    boolean existsUsers(@RequestBody List<Long> userIds);
+    boolean existsUsers(@RequestBody List<String> userIds);
 }

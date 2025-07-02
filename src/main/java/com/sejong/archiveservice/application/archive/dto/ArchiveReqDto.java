@@ -7,8 +7,8 @@ public record ArchiveReqDto(
     String summary,
     String content,
     String category,
-    Long writerId,
-    List<Long> participantIds,
+    String writerId,
+    List<String> participantIds,
     List<String> tags
 ) {
 }

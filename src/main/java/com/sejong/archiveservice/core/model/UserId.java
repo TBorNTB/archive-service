@@ -1,15 +1,16 @@
 package com.sejong.archiveservice.core.model;
 
 public class UserId {
-    private Long value;
-    private UserId(Long value) {
-        // validate(userId) // Todo(sigmaith): user-service에 유효한 id인지 검증 필요.
+
+    private String value;
+
+    private UserId(String value) {
         this.value = value;
     }
 
-    public static UserId of(Long value) {
+    public static UserId of(String value) {
         return new UserId(value);
     }
 
-    public Long userId() { return value; }
+    public String userId() { return value; }
 }

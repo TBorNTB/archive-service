@@ -4,6 +4,7 @@ import com.sejong.archiveservice.application.archive.dto.ArchiveReqDto;
 import com.sejong.archiveservice.application.archive.dto.ArchiveResDto;
 import com.sejong.archiveservice.application.archive.dto.UpdateFileInfoReqDto;
 import com.sejong.archiveservice.application.archive.service.ArchiveService;
+import com.sejong.archiveservice.application.config.security.UserContext;
 import com.sejong.archiveservice.application.file.FileUploadRequest;
 import com.sejong.archiveservice.application.file.FileUploader;
 import com.sejong.archiveservice.application.file.PreSignedUrl;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +34,17 @@ public class ArchiveController {
     @PostMapping()
     @Operation(summary = "아카이브 생성")
     public ResponseEntity<ArchiveResDto> createArchive(@RequestBody ArchiveReqDto archiveReqDto) {
-        Archive archive = archiveService.create(archiveReqDto);
+        UserContext currentUser = getCurrentUser();
+
+        ArchiveReqDto updatedReqDto = new ArchiveReqDto(archiveReqDto.title(),
+                archiveReqDto.summary(),
+                archiveReqDto.content(),
+                archiveReqDto.category(),
+                currentUser.getUserId(),
+                archiveReqDto.participantIds(),
+                archiveReqDto.tags());
+
+        Archive archive = archiveService.create(updatedReqDto);
         return ResponseEntity.ok(ArchiveResDto.from(archive));
     }
 
@@ -63,16 +75,22 @@ public class ArchiveController {
         return ResponseEntity.ok().build();
     }
 
+    // Todo: 커서 기반 페이지네이션 구현
 
-    @GetMapping("/health")
-    @Operation(summary = "헬스체크", description = "서비스 상태를 확인합니다.")
-    public ResponseEntity<String> healthCheck() {
-        return ResponseEntity.ok("Archive Service is running!");
+    @GetMapping("/{archiveId}")
+    @Operation(summary = "아카이브 조회")
+    public ResponseEntity<ArchiveResDto> getArchive(@PathVariable Long archiveId) {
+        Archive archive = archiveService.findById(archiveId);
+        return ResponseEntity.ok(ArchiveResDto.from(archive));
     }
 
-    @GetMapping("/test")
-    @Operation(summary = "테스트 엔드포인트", description = "Swagger 테스트용 엔드포인트입니다.")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("Test endpoint works!");
+//    // Todo: 요청을 보낸 유저가 곧 writer 인지 검증
+//    @PutMapping("/{archiveId}")
+//    @Operation(summary = "아카이브 수정")
+//    public
+
+    private UserContext getCurrentUser() {
+        return (UserContext) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
     }
 }

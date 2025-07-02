@@ -29,7 +29,7 @@ public class ArchiveService {
         return archiveRepository.save(archive);
     }
 
-    private void validateUserExistence(Long writerId, List<Long> participantIds) {
+    private void validateUserExistence(String writerId, List<String> participantIds) {
         if (!userServiceClient.exists(writerId)) {
             throw new IllegalArgumentException("존재하지 않는 작성자입니다.");
         }
@@ -50,5 +50,9 @@ public class ArchiveService {
         Archive archive = archiveRepository.findBy(archiveId);
         archive.updateFileInfo(Filepath.of(request.thumbnailPath()), Filepaths.of(request.attachedFilePaths()));
         archiveRepository.update(archive);
+    }
+
+    public Archive findById(Long archiveId) {
+        return archiveRepository.findBy(archiveId);
     }
 }

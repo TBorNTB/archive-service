@@ -13,11 +13,11 @@ public class UserIds {
 
     public static UserIds of(String ids) {
         String[] splits = ids.split(",");
-        List<Long> convertedIds = Arrays.stream(splits).map(Long::valueOf).toList();
+        List<String> convertedIds = Arrays.stream(splits).toList();
         return UserIds.of(convertedIds);
     }
 
-    public static UserIds of(List<Long> ids) {
+    public static UserIds of(List<String> ids) {
         return new UserIds(ids.stream().map(UserId::of).toList());
     }
 

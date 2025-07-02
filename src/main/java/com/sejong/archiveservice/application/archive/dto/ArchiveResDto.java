@@ -2,6 +2,7 @@ package com.sejong.archiveservice.application.archive.dto;
 
 import com.sejong.archiveservice.core.model.Archive;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 public record ArchiveResDto(
@@ -12,8 +13,8 @@ public record ArchiveResDto(
         String category,
         String thumbnailPath,
         List<String> attachedFilePaths,
-        Long writerId,
-        List<Long> participantIds,
+        String writerId,
+        List<String> participantIds,
         List<String> tags,
         int likes,
         int view,
@@ -38,13 +39,11 @@ public record ArchiveResDto(
         );
     }
 
-    private static List<Long> extractUserIds(String participantIds) {
+    private static List<String> extractUserIds(String participantIds) {
         if (participantIds == null || participantIds.isEmpty()) {
             return List.of();
         }
-        return List.of(participantIds.split(",")).stream()
-                .map(String::trim)
-                .map(Long::valueOf)
+        return Arrays.stream(participantIds.split(","))
                 .toList();
     }
 }
