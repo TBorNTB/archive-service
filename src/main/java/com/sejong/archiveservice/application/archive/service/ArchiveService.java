@@ -67,6 +67,15 @@ public class ArchiveService {
         return archiveRepository.update(archive);
     }
 
+    @Transactional
+    public void deleteArchive(Long archiveId, String writerId) {
+        Archive archive = archiveRepository.findBy(archiveId);
+        if (!archive.getWriterId().equals(UserId.of(writerId))) {
+            throw new IllegalArgumentException("아카이브 작성자만 내용을 수정할 수 있습니다.");
+        }
+        archiveRepository.delete(archive);
+    }
+
     public Archive findById(Long archiveId) {
         return archiveRepository.findBy(archiveId);
     }

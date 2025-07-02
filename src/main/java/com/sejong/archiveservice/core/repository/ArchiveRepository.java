@@ -25,4 +25,6 @@ public interface ArchiveRepository {
     Archive findBy(Long archiveId);
 
     Archive update(Archive archive);
+
+    void delete(Archive archive);
 }

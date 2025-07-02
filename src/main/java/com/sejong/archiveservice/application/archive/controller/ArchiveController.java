@@ -12,8 +12,10 @@ import com.sejong.archiveservice.core.model.Archive;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -94,7 +96,13 @@ public class ArchiveController {
         return ResponseEntity.ok(ArchiveResDto.from(archive));
     }
 
-
+    @DeleteMapping("/{archiveId}")
+    @Operation(summary = "아카이브 삭제")
+    public ResponseEntity<?> deleteArchive(@PathVariable Long archiveId) {
+        String writerId = getCurrentUser().getUserId();
+        archiveService.deleteArchive(archiveId, writerId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     private UserContext getCurrentUser() {
         return (UserContext) SecurityContextHolder.getContext()

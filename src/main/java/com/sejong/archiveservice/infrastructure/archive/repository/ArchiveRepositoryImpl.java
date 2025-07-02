@@ -35,4 +35,10 @@ public class ArchiveRepositoryImpl implements ArchiveRepository {
         ArchiveEntity entity = ArchiveMapper.toEntity(archive);
         return ArchiveMapper.toDomain(archiveJpaRepository.save(entity));
     }
+
+
+    @Override
+    public void delete(Archive archive) {
+        archiveJpaRepository.deleteById(archive.getId());
+    }
 }
