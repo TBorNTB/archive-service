@@ -12,7 +12,6 @@ public record ArchiveResDto(
         String content,
         String category,
         String thumbnailPath,
-        List<String> attachedFilePaths,
         String writerId,
         List<String> participantIds,
         List<String> tags,
@@ -28,8 +27,6 @@ public record ArchiveResDto(
                 archive.getContent().getContent(),
                 archive.getContent().getCategory().name(),
                 archive.getThumbnailPath() != null ? archive.getThumbnailPath().path() : null,
-                archive.getAttachedFilePaths() != null ?
-                        List.of(archive.getAttachedFilePaths().toString().split(",")) : List.of(),
                 archive.getWriterId().userId(),
                 extractUserIds(archive.getParticipantIds().toString()),
                 archive.getTags(),

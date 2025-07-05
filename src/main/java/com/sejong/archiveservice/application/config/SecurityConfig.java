@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .requestMatchers("/webjars/**").permitAll()
 
                 .requestMatchers(HttpMethod.GET,"/archive/**").permitAll()
-                .requestMatchers(HttpMethod.POST,"/archive/**").hasRole("BASIC")
+                .requestMatchers(HttpMethod.POST,"/archive/**").permitAll()
 
                 // 액추에이터 엔드포인트 허용
                 .requestMatchers("/actuator/**").permitAll()

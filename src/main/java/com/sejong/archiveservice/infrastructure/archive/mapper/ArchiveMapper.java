@@ -1,7 +1,6 @@
 package com.sejong.archiveservice.infrastructure.archive.mapper;
 
 import com.sejong.archiveservice.core.common.Filepath;
-import com.sejong.archiveservice.core.common.Filepaths;
 import com.sejong.archiveservice.core.model.Archive;
 import com.sejong.archiveservice.core.model.Content;
 import com.sejong.archiveservice.core.model.UserId;
@@ -24,7 +23,6 @@ public class ArchiveMapper {
                 .id(archiveEntity.getId())
                 .content(content)
                 .thumbnailPath(Filepath.of(archiveEntity.getThumbnailPath()))
-                .attachedFilePaths(Filepaths.of(archiveEntity.getAttachedFilePath()))
                 .writerId(UserId.of(archiveEntity.getWriterId()))
                 .participantIds(UserIds.of(archiveEntity.getParticipantIds()))
                 .tags(tags)
@@ -38,7 +36,6 @@ public class ArchiveMapper {
         return ArchiveEntity.builder()
                 .content(ContentEmbeddable.of(archive.getContent()))
                 .thumbnailPath(archive.getThumbnailPath() == null ? null : archive.getThumbnailPath().path())
-                .attachedFilePath(archive.getAttachedFilePaths() == null ? null : archive.getAttachedFilePaths().toString())
                 .writerId(archive.getWriterId().userId())
                 .participantIds(archive.getParticipantIds().toString())
                 .tags(archive.getTags().toString())

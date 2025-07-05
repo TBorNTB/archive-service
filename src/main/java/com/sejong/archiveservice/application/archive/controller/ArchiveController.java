@@ -51,18 +51,16 @@ public class ArchiveController {
         return ResponseEntity.ok(ArchiveResDto.from(archive));
     }
 
-    @PostMapping("/{archiveId}/files/presigned-url")
+    @PostMapping("/files/presigned-url")
     @Operation(summary = "파일 업로드용 PreSigned URL 생성")
-    public ResponseEntity<PreSignedUrl> preSignedUrl(
-            @PathVariable("archiveId") Long archiveId,
-            @RequestBody FileUploadRequest request) {
+    public ResponseEntity<PreSignedUrl> preSignedUrl(@RequestBody FileUploadRequest request) {
 
-        archiveService.validateArchiveExists(archiveId);
+//        archiveService.validateArchiveExists(archiveId);
 
         PreSignedUrl preSignedUrl = fileUploader.generatePreSignedUrl(
                 request.fileName(),
-                request.contentType(),
-                request.fileType()
+                request.contentType(), // "image/jpeg"
+                request.fileType() // "image"
         );
 
         return ResponseEntity.ok(preSignedUrl);

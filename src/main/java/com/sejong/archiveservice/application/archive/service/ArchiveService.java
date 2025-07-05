@@ -5,7 +5,6 @@ import com.sejong.archiveservice.application.archive.dto.ArchiveReqDto;
 import com.sejong.archiveservice.application.archive.dto.UpdateFileInfoReqDto;
 import com.sejong.archiveservice.application.file.FileUploader;
 import com.sejong.archiveservice.core.common.Filepath;
-import com.sejong.archiveservice.core.common.Filepaths;
 import com.sejong.archiveservice.core.model.Archive;
 import com.sejong.archiveservice.core.model.UserId;
 import com.sejong.archiveservice.core.model.UserIds;
@@ -51,7 +50,7 @@ public class ArchiveService {
     @Transactional
     public void updateFileInfo(Long archiveId, UpdateFileInfoReqDto request) {
         Archive archive = archiveRepository.findBy(archiveId);
-        archive.updateFileInfo(Filepath.of(request.thumbnailPath()), Filepaths.of(request.attachedFilePaths()));
+        archive.updateFileInfo(Filepath.of(request.thumbnailPath()));
         archiveRepository.update(archive);
     }
 

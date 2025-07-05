@@ -1,7 +1,6 @@
 package com.sejong.archiveservice.core.model;
 
 import com.sejong.archiveservice.core.common.Filepath;
-import com.sejong.archiveservice.core.common.Filepaths;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Builder;
@@ -17,7 +16,6 @@ public class Archive {
     private Long id;
     private Content content;
     private Filepath thumbnailPath;
-    private Filepaths attachedFilePaths;
     private UserId writerId;
     private UserIds participantIds;
     private List<String> tags;
@@ -26,12 +24,11 @@ public class Archive {
     private LocalDate createdAt;
 
     @Builder(toBuilder = true)
-    private Archive(Long id, Content content, Filepath thumbnailPath, Filepaths attachedFilePaths,
+    private Archive(Long id, Content content, Filepath thumbnailPath,
                     UserId writerId, UserIds participantIds, List<String> tags, int likes, int view, LocalDate createdAt) {
         this.id = id;
         this.content = content;
         this.thumbnailPath = thumbnailPath;
-        this.attachedFilePaths = attachedFilePaths;
         this.writerId = writerId;
         this.participantIds = participantIds;
         this.tags = tags;
@@ -45,7 +42,6 @@ public class Archive {
                 .id(null)
                 .content(content)
                 .thumbnailPath(null)
-                .attachedFilePaths(null)
                 .writerId(writerId)
                 .participantIds(participantIds)
                 .tags(tags)
@@ -61,8 +57,7 @@ public class Archive {
         this.tags = tags;
     }
 
-    public void updateFileInfo(Filepath filepath, Filepaths filepaths) {
+    public void updateFileInfo(Filepath filepath) {
         this.thumbnailPath = filepath;
-        this.attachedFilePaths = filepaths;
     }
 }

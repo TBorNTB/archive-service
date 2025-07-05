@@ -1,9 +1,7 @@
 package com.sejong.archiveservice.infrastructure.archive.entity;
 
-import com.sejong.archiveservice.infrastructure.archive.converter.FilepathsConverter;
 import com.sejong.archiveservice.infrastructure.archive.embeddable.ContentEmbeddable;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,10 +30,6 @@ public class ArchiveEntity {
     @Column(name = "thumbnail_path")
     private String thumbnailPath;
 
-    @Column(name = "attached_file_path")
-    @Convert(converter = FilepathsConverter.class)
-    private String attachedFilePath;
-
     @Column(name = "writer_id", nullable = false)
     private String writerId;
 
@@ -57,11 +51,10 @@ public class ArchiveEntity {
     private LocalDate createdAt;
 
     @Builder
-    private ArchiveEntity(ContentEmbeddable content, String thumbnailPath, String attachedFilePath,
+    private ArchiveEntity(ContentEmbeddable content, String thumbnailPath,
                           String writerId, String participantIds, String tags, int likes, int view, LocalDate createdAt) {
         this.content = content;
         this.thumbnailPath = thumbnailPath;
-        this.attachedFilePath = attachedFilePath;
         this.writerId = writerId;
         this.participantIds = participantIds;
         this.tags = tags;
