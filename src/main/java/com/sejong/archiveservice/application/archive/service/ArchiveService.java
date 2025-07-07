@@ -2,9 +2,6 @@ package com.sejong.archiveservice.application.archive.service;
 
 import com.sejong.archiveservice.application.archive.assembler.ArchiveAssembler;
 import com.sejong.archiveservice.application.archive.dto.ArchiveReqDto;
-import com.sejong.archiveservice.application.archive.dto.UpdateFileInfoReqDto;
-import com.sejong.archiveservice.application.file.FileUploader;
-import com.sejong.archiveservice.core.common.Filepath;
 import com.sejong.archiveservice.core.model.Archive;
 import com.sejong.archiveservice.core.model.UserId;
 import com.sejong.archiveservice.core.model.UserIds;
@@ -21,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArchiveService {
     private final ArchiveRepository archiveRepository;
     private final UserServiceClient userServiceClient;
-    private final FileUploader fileUploader;
 
     @Transactional
     public Archive create(ArchiveReqDto archiveReqDto) {
@@ -45,13 +41,6 @@ public class ArchiveService {
         if (!archiveRepository.existsArchive(archiveId)) {
             throw new IllegalArgumentException("존재하지 않는 아카이브입니다.");
         }
-    }
-
-    @Transactional
-    public void updateFileInfo(Long archiveId, UpdateFileInfoReqDto request) {
-        Archive archive = archiveRepository.findBy(archiveId);
-        archive.updateFileInfo(Filepath.of(request.thumbnailPath()));
-        archiveRepository.update(archive);
     }
 
     @Transactional

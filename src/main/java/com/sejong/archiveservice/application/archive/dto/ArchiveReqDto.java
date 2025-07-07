@@ -12,6 +12,3 @@ public record ArchiveReqDto(
     List<String> tags
 ) {
 }
-
-// Filepath 제외
-// likes, view 제외
