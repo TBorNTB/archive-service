@@ -2,6 +2,8 @@ package com.sejong.archiveservice.application.archive.service;
 
 import com.sejong.archiveservice.application.archive.assembler.ArchiveAssembler;
 import com.sejong.archiveservice.application.archive.dto.ArchiveReqDto;
+import com.sejong.archiveservice.application.pagination.OffsetPageReqDto;
+import com.sejong.archiveservice.core.common.OffsetPageResponse;
 import com.sejong.archiveservice.core.model.Archive;
 import com.sejong.archiveservice.core.model.UserId;
 import com.sejong.archiveservice.core.model.UserIds;
@@ -66,5 +68,9 @@ public class ArchiveService {
 
     public Archive findById(Long archiveId) {
         return archiveRepository.findBy(archiveId);
+    }
+
+    public OffsetPageResponse getOffsetArchives(OffsetPageReqDto offsetPageReqDto) {
+        return archiveRepository.findAll(offsetPageReqDto.toPageRequest());
     }
 }

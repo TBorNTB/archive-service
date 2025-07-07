@@ -1,10 +1,17 @@
 package com.sejong.archiveservice.infrastructure.archive.repository;
 
+import com.sejong.archiveservice.core.common.CustomPageRequest;
+import com.sejong.archiveservice.core.common.OffsetPageResponse;
 import com.sejong.archiveservice.core.model.Archive;
 import com.sejong.archiveservice.core.repository.ArchiveRepository;
 import com.sejong.archiveservice.infrastructure.archive.entity.ArchiveEntity;
 import com.sejong.archiveservice.infrastructure.archive.mapper.ArchiveMapper;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -40,5 +47,16 @@ public class ArchiveRepositoryImpl implements ArchiveRepository {
     @Override
     public void delete(Archive archive) {
         archiveJpaRepository.deleteById(archive.getId());
+    }
+
+    @Override
+    public OffsetPageResponse findAll(CustomPageRequest customPageRequest) {
+        Pageable pageable = PageRequest.of(customPageRequest.getPage(),
+                customPageRequest.getSize(),
+                Direction.valueOf(customPageRequest.getDirection().name()),
+                customPageRequest.getSortBy());
+        Page<ArchiveEntity> archiveEntities = archiveJpaRepository.findAll(pageable);
+        List<Archive> archives = archiveEntities.stream().map(ArchiveMapper::toDomain).toList();
+        return OffsetPageResponse.ok(archiveEntities.getNumber(), archiveEntities.getTotalPages(), archives);
     }
 }
