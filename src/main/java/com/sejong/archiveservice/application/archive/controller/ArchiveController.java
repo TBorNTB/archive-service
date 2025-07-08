@@ -13,6 +13,7 @@ import com.sejong.archiveservice.core.model.Archive;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,8 +69,8 @@ public class ArchiveController {
     // Todo: 오프셋 기반 페이지네이션 구현
     @GetMapping
     @Operation(summary = "모든 아카이브 조회")
-    public OffsetPageResponse getOffsetArchives(@ModelAttribute @Valid OffsetPageReqDto offsetPageReqDto) {
-        return archiveService.getOffsetArchives(offsetPageReqDto);
+    public ResponseEntity<OffsetPageResponse<List<Archive>>> getOffsetArchives(@ModelAttribute @Valid OffsetPageReqDto offsetPageReqDto) {
+        return ResponseEntity.ok(archiveService.getOffsetArchives(offsetPageReqDto));
     }
 
     // Todo: 커서 기반 페이지네이션 구현

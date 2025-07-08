@@ -3,6 +3,7 @@ package com.sejong.archiveservice.core.repository;
 import com.sejong.archiveservice.core.common.CustomPageRequest;
 import com.sejong.archiveservice.core.common.OffsetPageResponse;
 import com.sejong.archiveservice.core.model.Archive;
+import java.util.List;
 
 
 public interface ArchiveRepository {
@@ -31,5 +32,5 @@ public interface ArchiveRepository {
 
     void delete(Archive archive);
 
-    OffsetPageResponse findAll(CustomPageRequest customPageRequest);
+    OffsetPageResponse<List<Archive>> findAll(CustomPageRequest customPageRequest);
 }

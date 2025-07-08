@@ -50,7 +50,7 @@ public class ArchiveRepositoryImpl implements ArchiveRepository {
     }
 
     @Override
-    public OffsetPageResponse findAll(CustomPageRequest customPageRequest) {
+    public OffsetPageResponse<List<Archive>> findAll(CustomPageRequest customPageRequest) {
         Pageable pageable = PageRequest.of(customPageRequest.getPage(),
                 customPageRequest.getSize(),
                 Direction.valueOf(customPageRequest.getDirection().name()),

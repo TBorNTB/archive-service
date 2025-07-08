@@ -70,7 +70,7 @@ public class ArchiveService {
         return archiveRepository.findBy(archiveId);
     }
 
-    public OffsetPageResponse getOffsetArchives(OffsetPageReqDto offsetPageReqDto) {
+    public OffsetPageResponse<List<Archive>> getOffsetArchives(OffsetPageReqDto offsetPageReqDto) {
         return archiveRepository.findAll(offsetPageReqDto.toPageRequest());
     }
 }
