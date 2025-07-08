@@ -1,6 +1,6 @@
 package com.sejong.archiveservice.infrastructure.archive.mapper;
 
-import com.sejong.archiveservice.core.common.Filepath;
+import com.sejong.archiveservice.core.common.file.Filepath;
 import com.sejong.archiveservice.core.model.Archive;
 import com.sejong.archiveservice.core.model.Content;
 import com.sejong.archiveservice.core.model.UserId;

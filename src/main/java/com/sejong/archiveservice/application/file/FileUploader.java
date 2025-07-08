@@ -1,6 +1,6 @@
 package com.sejong.archiveservice.application.file;
 
-import com.sejong.archiveservice.core.common.Filepath;
+import com.sejong.archiveservice.core.common.file.Filepath;
 
 public interface FileUploader {
     PreSignedUrl generatePreSignedUrl(String fileName, String contentType, String dirName);

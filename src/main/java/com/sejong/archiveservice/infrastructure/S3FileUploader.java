@@ -2,7 +2,7 @@ package com.sejong.archiveservice.infrastructure;
 
 import com.sejong.archiveservice.application.file.FileUploader;
 import com.sejong.archiveservice.application.file.PreSignedUrl;
-import com.sejong.archiveservice.core.common.Filepath;
+import com.sejong.archiveservice.core.common.file.Filepath;
 import java.time.Duration;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

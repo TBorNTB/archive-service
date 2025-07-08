@@ -1,4 +1,4 @@
-package com.sejong.archiveservice.core.common;
+package com.sejong.archiveservice.core.common.file;
 
 import java.util.Arrays;
 import java.util.List;

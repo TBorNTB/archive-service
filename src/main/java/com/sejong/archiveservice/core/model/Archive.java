@@ -1,6 +1,6 @@
 package com.sejong.archiveservice.core.model;
 
-import com.sejong.archiveservice.core.common.Filepath;
+import com.sejong.archiveservice.core.common.file.Filepath;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Builder;
