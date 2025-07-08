@@ -2,8 +2,12 @@ package com.sejong.archiveservice.application.archive.service;
 
 import com.sejong.archiveservice.application.archive.assembler.ArchiveAssembler;
 import com.sejong.archiveservice.application.archive.dto.ArchiveReqDto;
+import com.sejong.archiveservice.application.pagination.CursorPageReqDto;
 import com.sejong.archiveservice.application.pagination.OffsetPageReqDto;
-import com.sejong.archiveservice.core.common.OffsetPageResponse;
+import com.sejong.archiveservice.core.common.pagination.CursorPageRequest;
+import com.sejong.archiveservice.core.common.pagination.CursorPageResponse;
+import com.sejong.archiveservice.core.common.pagination.CustomPageRequest;
+import com.sejong.archiveservice.core.common.pagination.OffsetPageResponse;
 import com.sejong.archiveservice.core.model.Archive;
 import com.sejong.archiveservice.core.model.UserId;
 import com.sejong.archiveservice.core.model.UserIds;
@@ -71,6 +75,12 @@ public class ArchiveService {
     }
 
     public OffsetPageResponse<List<Archive>> getOffsetArchives(OffsetPageReqDto offsetPageReqDto) {
-        return archiveRepository.findAll(offsetPageReqDto.toPageRequest());
+        CustomPageRequest pageRequest = offsetPageReqDto.toPageRequest();
+        return archiveRepository.findAllWithOffset(pageRequest);
+    }
+
+    public CursorPageResponse<List<Archive>> getCursorArchives(CursorPageReqDto cursorPageReqDto) {
+        CursorPageRequest pageRequest = cursorPageReqDto.toPageRequest();
+        return archiveRepository.findAllWithCursor(pageRequest);
     }
 }

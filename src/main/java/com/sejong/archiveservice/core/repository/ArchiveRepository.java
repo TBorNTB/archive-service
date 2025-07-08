@@ -1,7 +1,9 @@
 package com.sejong.archiveservice.core.repository;
 
-import com.sejong.archiveservice.core.common.CustomPageRequest;
-import com.sejong.archiveservice.core.common.OffsetPageResponse;
+import com.sejong.archiveservice.core.common.pagination.CursorPageRequest;
+import com.sejong.archiveservice.core.common.pagination.CursorPageResponse;
+import com.sejong.archiveservice.core.common.pagination.CustomPageRequest;
+import com.sejong.archiveservice.core.common.pagination.OffsetPageResponse;
 import com.sejong.archiveservice.core.model.Archive;
 import java.util.List;
 
@@ -32,5 +34,7 @@ public interface ArchiveRepository {
 
     void delete(Archive archive);
 
-    OffsetPageResponse<List<Archive>> findAll(CustomPageRequest customPageRequest);
+    OffsetPageResponse<List<Archive>> findAllWithOffset(CustomPageRequest customPageRequest);
+
+    CursorPageResponse<List<Archive>> findAllWithCursor(CursorPageRequest cursorPageRequest);
 }
