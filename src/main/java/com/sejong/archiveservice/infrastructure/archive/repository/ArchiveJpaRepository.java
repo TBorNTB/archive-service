@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface ArchiveJpaRepository extends JpaRepository<ArchiveEntity, Long> {
     boolean existsById(Long archiveId);
 
-    Page<ArchiveEntity> findAllWithOffset(Pageable pageable);
+    Page<ArchiveEntity> findAll(Pageable pageable);
 
     // ID 기준 DESC 커서 페이지네이션
     @Query("SELECT a FROM ArchiveEntity a WHERE a.id < :cursor ORDER BY a.id DESC")
