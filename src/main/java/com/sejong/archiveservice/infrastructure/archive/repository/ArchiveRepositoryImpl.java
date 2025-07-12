@@ -24,7 +24,8 @@ public class ArchiveRepositoryImpl implements ArchiveRepository {
     @Override
     public Archive save(Archive archive) {
         ArchiveEntity entity = ArchiveMapper.toEntity(archive);
-        return ArchiveMapper.toDomain(archiveJpaRepository.save(entity));
+        ArchiveEntity archiveEntity = archiveJpaRepository.save(entity);
+        return ArchiveMapper.toDomain(archiveEntity);
     }
 
     @Override
@@ -78,7 +79,7 @@ public class ArchiveRepositoryImpl implements ArchiveRepository {
 
         // 실제 반환할 데이터는 요청한 크기만큼만
         List<ArchiveEntity> resultEntities = hasNext ?
-                entities.subList(0, cursorPageRequest.getSize()) : entities;
+                entities.subList(0, cursorPageRequest.getSize()) : entities; // Todo: 아예 sql로 limit
 
         List<Archive> archives = resultEntities.stream()
                 .map(ArchiveMapper::toDomain)
