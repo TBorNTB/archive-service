@@ -13,6 +13,7 @@ import com.sejong.archiveservice.core.common.pagination.CursorPageResponse;
 import com.sejong.archiveservice.core.common.pagination.OffsetPageResponse;
 import com.sejong.archiveservice.core.model.Archive;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -41,6 +42,7 @@ public class ArchiveController {
 
     @PostMapping()
     @Operation(summary = "아카이브 생성")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ArchiveResDto> createArchive(@RequestBody ArchiveReqDto archiveReqDto) {
         UserContext currentUser = getCurrentUser();
 
@@ -58,6 +60,7 @@ public class ArchiveController {
 
     @PostMapping("/files/presigned-url")
     @Operation(summary = "파일 업로드용 PreSigned URL 생성")
+//    @SecurityRequirement(name = "bearerAuth") TODO: 보안 설정
     public ResponseEntity<PreSignedUrl> preSignedUrl(@RequestBody FileUploadRequest request) {
         PreSignedUrl preSignedUrl = fileUploader.generatePreSignedUrl(
                 request.fileName(),
@@ -91,6 +94,7 @@ public class ArchiveController {
 
     @PutMapping("/{archiveId}")
     @Operation(summary = "아카이브 수정")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ArchiveResDto> updateArchive(@PathVariable Long archiveId, @RequestBody ArchiveReqDto archiveReqDto) {
         String writerId = getCurrentUser().getUserId();
         Archive archive = archiveService.updateArchive(archiveId, archiveReqDto, writerId);
@@ -99,7 +103,8 @@ public class ArchiveController {
 
     @DeleteMapping("/{archiveId}")
     @Operation(summary = "아카이브 삭제")
-    public ResponseEntity<?> deleteArchive(@PathVariable Long archiveId) {
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<Void> deleteArchive(@PathVariable Long archiveId) {
         String writerId = getCurrentUser().getUserId();
         archiveService.deleteArchive(archiveId, writerId);
         return new ResponseEntity<>(HttpStatus.OK);
