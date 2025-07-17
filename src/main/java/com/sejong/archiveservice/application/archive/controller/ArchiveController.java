@@ -40,6 +40,11 @@ public class ArchiveController {
     private final ArchiveService archiveService;
     private final FileUploader fileUploader;
 
+    @GetMapping("/health")
+    public String healthCheck() {
+        return "ok";
+    }
+
     @PostMapping()
     @Operation(summary = "아카이브 생성")
     @SecurityRequirement(name = "bearerAuth")
