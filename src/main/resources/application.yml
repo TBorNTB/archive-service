@@ -6,7 +6,7 @@ server:
 
 spring:
   application:
-    name: project-service
+    name: archive-service
 
   datasource:
     url: jdbc:mysql://mysql:3306/archive_schema?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
