@@ -69,6 +69,7 @@ jobs:
 
             docker run -d --name ${{ secrets.IMAGE_NAME }} -P \
               --network ${{secrets.DOCKER_NETWORK_NAME}} \
+              -e AWS_S3_REGION="${{ secrets.AWS_S3_REGION }}" \
               -e S3_SECRET_KEY="${{ secrets.S3_SECRET_KEY }}" \
               -e EC2_HOST="${{ secrets.EC2_HOST }}" \
               -e S3_BUCKET="${{ secrets.S3_BUCKET }}" \
