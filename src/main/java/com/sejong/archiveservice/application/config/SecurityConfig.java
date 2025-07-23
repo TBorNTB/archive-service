@@ -23,7 +23,7 @@ public class SecurityConfig {
             .cors((corsCustomizer -> corsCustomizer.configurationSource(request -> {
               CorsConfiguration configuration = new CorsConfiguration();
               configuration.setAllowedOrigins(Arrays.asList(
-                  "http://3.37.124.162:8000"
+                  "http://localhost:8000"
               ));
               configuration.setAllowedMethods(Collections.singletonList("*"));
               configuration.setAllowCredentials(true);
