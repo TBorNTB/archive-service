@@ -83,4 +83,9 @@ public class ArchiveService {
         CursorPageRequest pageRequest = cursorPageReqDto.toPageRequest();
         return archiveRepository.findAllWithCursor(pageRequest);
     }
+
+    @Transactional(readOnly = true)
+    public Boolean exists(Long archiveId) {
+        return archiveRepository.existsArchive(archiveId);
+    }
 }
