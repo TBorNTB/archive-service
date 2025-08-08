@@ -1,4 +1,4 @@
-package com.sejong.archiveservice.application.external;
+package com.sejong.archiveservice.application.internal;
 
 import com.sejong.archiveservice.application.archive.service.ArchiveService;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/external/archive")
-public class ArchiveExternalController {
+@RequestMapping("/internal/archive")
+public class ArchiveInternalController {
 
     private final ArchiveService archiveService;
 
