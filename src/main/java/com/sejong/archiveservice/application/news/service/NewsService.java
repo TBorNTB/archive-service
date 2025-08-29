@@ -30,7 +30,7 @@ public class NewsService {
 
     @Transactional
     public News createNews(NewsReqDto newsReqDto) {
-        validateUserExistence(newsReqDto.writerId(), newsReqDto.participantIds());
+//        validateUserExistence(newsReqDto.writerId(), newsReqDto.participantIds());
 
         News news = NewsAssembler.toNews(newsReqDto);
         News savedNews = newsRepository.save(news);

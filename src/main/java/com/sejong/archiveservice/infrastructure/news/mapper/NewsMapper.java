@@ -27,6 +27,7 @@ public class NewsMapper {
                 .participantIds(UserIds.of(newsEntity.getParticipantIds()))
                 .tags(tags)
                 .createdAt(newsEntity.getCreatedAt())
+                .updatedAt(newsEntity.getUpdatedAt())
                 .build();
     }
 

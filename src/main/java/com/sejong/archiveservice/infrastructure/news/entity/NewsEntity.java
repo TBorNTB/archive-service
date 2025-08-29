@@ -37,15 +37,8 @@ public class NewsEntity {
     @Column(name = "archive_user_ids")
     private String participantIds;
 
-
     @Column(name = "tag")
     private String tags;
-
-    @Column(name = "likes", nullable = false)
-    private int likes = 0;
-
-    @Column(name = "view", nullable = false)
-    private int view = 0;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

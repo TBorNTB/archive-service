@@ -39,11 +39,16 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/webjars/swagger-ui/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui/index.html#/",
-                                "/news/health", "/news", "/news/files/presigned-url", "/news/offset", "/news/cursor", "/news/{newsId}"
-                        )
-                        .permitAll()
-//                        .requestMatchers("/admin").hasRole("ADMIN")
+                        // Swagger 및 API 문서
+                        .requestMatchers("/", "/webjars/swagger-ui/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui/index.html#/").permitAll()
+                        // Health check
+                        .requestMatchers("/news/health").permitAll()
+                        // 인증 불필요 - 조회 관련
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/news/offset", "/news/cursor", "/news/{newsId}").permitAll()
+                        // 인증 필요 - 생성, 수정, 삭제
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/news", "/news/files/presigned-url").authenticated()
+                        .requestMatchers(org.springframework.http.HttpMethod.PUT, "/news/{newsId}").authenticated()
+                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/news/{newsId}").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(userContextFilter, UsernamePasswordAuthenticationFilter.class);
 
