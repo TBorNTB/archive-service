@@ -26,9 +26,9 @@ public class NewsEventPublisher {
         publish(news, UPDATED);
     }
 
-    public void publishDeleted(String newsId) {
-        NewsIndexEvent event = NewsIndexEvent.deleteOf(newsId, Type.DELETED, System.currentTimeMillis());
-        kafkaTemplate.send(NEWS_EVENTS, newsId,  toJsonString(event));
+    public void publishDeleted(Long newsId) {
+        NewsIndexEvent event = NewsIndexEvent.deleteOf(newsId.toString(), Type.DELETED, System.currentTimeMillis());
+        kafkaTemplate.send(NEWS_EVENTS, newsId.toString(),  toJsonString(event));
     }
 
     private void publish(News news, Type type) {

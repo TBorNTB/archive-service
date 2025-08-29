@@ -59,7 +59,7 @@ public class NewsController {
                 newsReqDto.participantIds(),
                 newsReqDto.tags());
 
-        News archive = newsService.create(updatedReqDto);
+        News archive = newsService.createNews(updatedReqDto);
         return ResponseEntity.ok(NewsArchiveResDto.from(archive));
     }
 
@@ -79,14 +79,14 @@ public class NewsController {
     @GetMapping("/offset")
     @Operation(summary = "뉴스 조회 (오프셋 기반 페이지네이션)")
     public ResponseEntity<OffsetPageResponse<List<News>>> getOffsetArchives(@ModelAttribute @Valid OffsetPageReqDto offsetPageReqDto) {
-        OffsetPageResponse<List<News>> offsetArchives = newsService.getOffsetArchives(offsetPageReqDto);
+        OffsetPageResponse<List<News>> offsetArchives = newsService.getOffsetNews(offsetPageReqDto);
         return ResponseEntity.ok(offsetArchives);
     }
 
     @GetMapping("/cursor")
     @Operation(summary = "뉴스 조회 (커서 기반 페이지네이션)")
     public ResponseEntity<CursorPageResponse<List<News>>> getCursorArchives(@ModelAttribute @Valid CursorPageReqDto cursorPageReqDto) {
-        CursorPageResponse<List<News>> cursorArchives = newsService.getCursorArchives(cursorPageReqDto);
+        CursorPageResponse<List<News>> cursorArchives = newsService.getCursorNews(cursorPageReqDto);
         return ResponseEntity.ok(cursorArchives);
     }
 
@@ -102,7 +102,7 @@ public class NewsController {
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<NewsArchiveResDto> updateArchive(@PathVariable Long archiveId, @RequestBody NewsReqDto newsReqDto) {
         String writerId = getCurrentUser().getUserId();
-        News archive = newsService.updateArchive(archiveId, newsReqDto, writerId);
+        News archive = newsService.updateNews(archiveId, newsReqDto, writerId);
         return ResponseEntity.ok(NewsArchiveResDto.from(archive));
     }
 
@@ -111,7 +111,7 @@ public class NewsController {
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Void> deleteArchive(@PathVariable Long archiveId) {
         String writerId = getCurrentUser().getUserId();
-        newsService.deleteArchive(archiveId, writerId);
+        newsService.deleteNews(archiveId, writerId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
