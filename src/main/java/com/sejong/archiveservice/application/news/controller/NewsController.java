@@ -4,8 +4,8 @@ import com.sejong.archiveservice.application.config.security.UserContext;
 import com.sejong.archiveservice.application.file.FileUploadRequest;
 import com.sejong.archiveservice.application.file.FileUploader;
 import com.sejong.archiveservice.application.file.PreSignedUrl;
-import com.sejong.archiveservice.application.news.dto.NewsArchiveResDto;
 import com.sejong.archiveservice.application.news.dto.NewsReqDto;
+import com.sejong.archiveservice.application.news.dto.NewsResDto;
 import com.sejong.archiveservice.application.news.service.NewsService;
 import com.sejong.archiveservice.application.pagination.CursorPageReqDto;
 import com.sejong.archiveservice.application.pagination.OffsetPageReqDto;
@@ -48,7 +48,7 @@ public class NewsController {
     @PostMapping()
     @Operation(summary = "뉴스 생성")
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<NewsArchiveResDto> createArchive(@RequestBody NewsReqDto newsReqDto) {
+    public ResponseEntity<NewsResDto> createArchive(@RequestBody NewsReqDto newsReqDto) {
         UserContext currentUser = getCurrentUser();
 
         NewsReqDto updatedReqDto = new NewsReqDto(newsReqDto.title(),
@@ -60,7 +60,7 @@ public class NewsController {
                 newsReqDto.tags());
 
         News archive = newsService.createNews(updatedReqDto);
-        return ResponseEntity.ok(NewsArchiveResDto.from(archive));
+        return ResponseEntity.ok(NewsResDto.from(archive));
     }
 
     @PostMapping("/files/presigned-url")
@@ -90,28 +90,28 @@ public class NewsController {
         return ResponseEntity.ok(cursorArchives);
     }
 
-    @GetMapping("/{archiveId}")
+    @GetMapping("/{newsId}")
     @Operation(summary = "뉴스 조회")
-    public ResponseEntity<NewsArchiveResDto> getArchive(@PathVariable Long archiveId) {
-        News archive = newsService.findById(archiveId);
-        return ResponseEntity.ok(NewsArchiveResDto.from(archive));
+    public ResponseEntity<NewsResDto> getArchive(@PathVariable Long newsId) {
+        News archive = newsService.findById(newsId);
+        return ResponseEntity.ok(NewsResDto.from(archive));
     }
 
-    @PutMapping("/{archiveId}")
+    @PutMapping("/{newsId}")
     @Operation(summary = "뉴스 수정")
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<NewsArchiveResDto> updateArchive(@PathVariable Long archiveId, @RequestBody NewsReqDto newsReqDto) {
+    public ResponseEntity<NewsResDto> updateArchive(@PathVariable Long newsId, @RequestBody NewsReqDto newsReqDto) {
         String writerId = getCurrentUser().getUserId();
-        News archive = newsService.updateNews(archiveId, newsReqDto, writerId);
-        return ResponseEntity.ok(NewsArchiveResDto.from(archive));
+        News archive = newsService.updateNews(newsId, newsReqDto, writerId);
+        return ResponseEntity.ok(NewsResDto.from(archive));
     }
 
-    @DeleteMapping("/{archiveId}")
+    @DeleteMapping("/{newsId}")
     @Operation(summary = "뉴스 삭제")
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<Void> deleteArchive(@PathVariable Long archiveId) {
+    public ResponseEntity<Void> deleteArchive(@PathVariable Long newsId) {
         String writerId = getCurrentUser().getUserId();
-        newsService.deleteNews(archiveId, writerId);
+        newsService.deleteNews(newsId, writerId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

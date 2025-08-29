@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-public record NewsArchiveResDto(
+public record NewsResDto(
         Long id,
         String title,
         String summary,
@@ -18,8 +18,8 @@ public record NewsArchiveResDto(
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
-    public static NewsArchiveResDto from(News archive) {
-        return new NewsArchiveResDto(
+    public static NewsResDto from(News archive) {
+        return new NewsResDto(
                 archive.getId(),
                 archive.getContent().getTitle(),
                 archive.getContent().getSummary(),
