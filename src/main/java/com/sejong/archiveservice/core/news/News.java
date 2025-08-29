@@ -3,8 +3,9 @@ package com.sejong.archiveservice.core.news;
 import com.sejong.archiveservice.core.common.file.Filepath;
 import com.sejong.archiveservice.core.user.UserId;
 import com.sejong.archiveservice.core.user.UserIds;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,6 +14,8 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
+@Builder
+@AllArgsConstructor
 public class News {
 
     private Long id;
@@ -21,23 +24,8 @@ public class News {
     private UserId writerId;
     private UserIds participantIds;
     private List<String> tags;
-    private int likes;
-    private int view;
-    private LocalDate createdAt;
-
-    @Builder(toBuilder = true)
-    private News(Long id, Content content, Filepath thumbnailPath,
-                 UserId writerId, UserIds participantIds, List<String> tags, int likes, int view, LocalDate createdAt) {
-        this.id = id;
-        this.content = content;
-        this.thumbnailPath = thumbnailPath;
-        this.writerId = writerId;
-        this.participantIds = participantIds;
-        this.tags = tags;
-        this.likes = likes;
-        this.view = view;
-        this.createdAt = createdAt;
-    }
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public static News create(Content content, UserId writerId, UserIds participantIds, List<String> tags) {
         return News.builder()
@@ -47,9 +35,8 @@ public class News {
                 .writerId(writerId)
                 .participantIds(participantIds)
                 .tags(tags)
-                .likes(0)
-                .view(0)
-                .createdAt(LocalDate.now())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 
@@ -57,6 +44,7 @@ public class News {
         this.content = content;
         this.participantIds = participantIds;
         this.tags = tags;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void updateFileInfo(Filepath filepath) {

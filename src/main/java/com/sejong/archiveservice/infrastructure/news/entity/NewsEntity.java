@@ -8,7 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,18 +48,21 @@ public class NewsEntity {
     private int view = 0;
 
     @Column(name = "created_at", nullable = false)
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
     @Builder
     private NewsEntity(ContentEmbeddable content, String thumbnailPath,
-                       String writerId, String participantIds, String tags, int likes, int view, LocalDate createdAt) {
+                       String writerId, String participantIds, String tags,
+                       LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.content = content;
         this.thumbnailPath = thumbnailPath;
         this.writerId = writerId;
         this.participantIds = participantIds;
         this.tags = tags;
-        this.likes = likes;
-        this.view = view;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 }

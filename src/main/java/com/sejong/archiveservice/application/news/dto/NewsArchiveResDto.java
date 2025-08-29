@@ -1,7 +1,7 @@
 package com.sejong.archiveservice.application.news.dto;
 
 import com.sejong.archiveservice.core.news.News;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,9 +15,8 @@ public record NewsArchiveResDto(
         String writerId,
         List<String> participantIds,
         List<String> tags,
-        int likes,
-        int view,
-        LocalDate createdAt
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
     public static NewsArchiveResDto from(News archive) {
         return new NewsArchiveResDto(
@@ -30,9 +29,8 @@ public record NewsArchiveResDto(
                 archive.getWriterId().userId(),
                 extractUserIds(archive.getParticipantIds().toString()),
                 archive.getTags(),
-                archive.getLikes(),
-                archive.getView(),
-                archive.getCreatedAt()
+                archive.getCreatedAt(),
+                archive.getUpdatedAt()
         );
     }
 

@@ -26,20 +26,19 @@ public class NewsMapper {
                 .writerId(UserId.of(newsEntity.getWriterId()))
                 .participantIds(UserIds.of(newsEntity.getParticipantIds()))
                 .tags(tags)
-                .likes(newsEntity.getLikes())
-                .view(newsEntity.getView())
                 .createdAt(newsEntity.getCreatedAt())
                 .build();
     }
 
-    public static NewsEntity toEntity(News archive) {
+    public static NewsEntity toEntity(News news) {
         return NewsEntity.builder()
-                .content(ContentEmbeddable.of(archive.getContent()))
-                .thumbnailPath(archive.getThumbnailPath() == null ? null : archive.getThumbnailPath().path())
-                .writerId(archive.getWriterId().userId())
-                .participantIds(archive.getParticipantIds().toString())
-                .tags(archive.getTags().toString())
-                .createdAt(archive.getCreatedAt())
+                .content(ContentEmbeddable.of(news.getContent()))
+                .thumbnailPath(news.getThumbnailPath() == null ? null : news.getThumbnailPath().path())
+                .writerId(news.getWriterId().userId())
+                .participantIds(news.getParticipantIds().toString())
+                .tags(news.getTags().toString())
+                .createdAt(news.getCreatedAt())
+                .updatedAt(news.getUpdatedAt())
                 .build();
     }
 }
