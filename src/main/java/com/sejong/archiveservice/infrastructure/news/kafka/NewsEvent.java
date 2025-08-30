@@ -1,10 +1,7 @@
 package com.sejong.archiveservice.infrastructure.news.kafka;
 
-import com.sejong.archiveservice.core.common.file.Filepath;
 import com.sejong.archiveservice.core.news.Content;
 import com.sejong.archiveservice.core.news.News;
-import com.sejong.archiveservice.core.user.UserId;
-import com.sejong.archiveservice.core.user.UserIds;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -23,9 +20,9 @@ public class NewsEvent {
 
     private String id;
     private Content content;
-    private Filepath thumbnailPath;
-    private UserId writerId;
-    private UserIds participantIds;
+    private String thumbnailPath;
+    private String writerId;
+    private List<String> participantIds;
     private List<String> tags;
     private String createdAt;
     private String updatedAt;
@@ -34,9 +31,9 @@ public class NewsEvent {
         return NewsEvent.builder()
                 .id(news.getId().toString())
                 .content(news.getContent())
-                .thumbnailPath(news.getThumbnailPath())
-                .writerId(news.getWriterId())
-                .participantIds(news.getParticipantIds())
+                .thumbnailPath(news.getThumbnailPath() != null ? news.getThumbnailPath().path() : null)
+                .writerId(news.getWriterId().userId())
+                .participantIds(news.getParticipantIds() != null ? news.getParticipantIds().toList() : null)
                 .tags(news.getTags())
                 .createdAt(news.getCreatedAt().truncatedTo(ChronoUnit.MILLIS).format(FORMATTER))
                 .updatedAt(news.getUpdatedAt().truncatedTo(ChronoUnit.MILLIS).format(FORMATTER))

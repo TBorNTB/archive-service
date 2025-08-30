@@ -21,6 +21,12 @@ public class UserIds {
         return new UserIds(ids.stream().map(UserId::of).toList());
     }
 
+    public List<String> toList() {
+        return userIds.stream()
+                .map(UserId::userId)
+                .collect(Collectors.toList());
+    }
+    
     @Override
     public String toString() {
         return userIds.stream()

@@ -41,7 +41,7 @@ public class NewsEventPublisher {
             String message = objectMapper.writeValueAsString(object);
             return message;
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Json 직렬화 실패");
+            throw new RuntimeException("Json 직렬화 실패: " + e.getMessage(), e);
         }
     }
 }
