@@ -22,34 +22,34 @@ public class NewsRepositoryImpl implements NewsRepository {
     private final ArchiveJpaRepository archiveJpaRepository;
 
     @Override
-    public News save(News archive) {
-        NewsEntity entity = NewsMapper.toEntity(archive);
+    public News save(News news) {
+        NewsEntity entity = NewsMapper.toEntity(news);
         NewsEntity newsEntity = archiveJpaRepository.save(entity);
         return NewsMapper.toDomain(newsEntity);
     }
 
     @Override
-    public boolean existsArchive(Long archiveId) {
-        return archiveJpaRepository.existsById(archiveId);
+    public boolean existsNews(Long newsId) {
+        return archiveJpaRepository.existsById(newsId);
     }
 
     @Override
-    public News findBy(Long archiveId) {
-        NewsEntity newsEntity = archiveJpaRepository.findById(archiveId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아카이브 ID"));
+    public News findBy(Long newsId) {
+        NewsEntity newsEntity = archiveJpaRepository.findById(newsId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 뉴스 ID"));
         return NewsMapper.toDomain(newsEntity);
     }
 
     @Override
-    public News update(News archive) {
-        NewsEntity entity = NewsMapper.toEntity(archive);
+    public News update(News news) {
+        NewsEntity entity = NewsMapper.toEntity(news);
         return NewsMapper.toDomain(archiveJpaRepository.save(entity));
     }
 
 
     @Override
-    public void delete(News archive) {
-        archiveJpaRepository.deleteById(archive.getId());
+    public void delete(News news) {
+        archiveJpaRepository.deleteById(news.getId());
     }
 
     @Override

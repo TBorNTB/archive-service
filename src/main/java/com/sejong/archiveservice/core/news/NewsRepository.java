@@ -8,30 +8,16 @@ import java.util.List;
 
 
 public interface NewsRepository {
-    /**
-     *
-     * @param archive 저장할 Archive 객체
-     * @return 저장된 Archive 객체
-     */
-    News save(News archive);
 
-    /**
-     *
-     * @param archiveId archive id
-     * @return 해당 archiveId를 가진 archive 존재 여부
-     */
-    boolean existsArchive(Long archiveId);
+    News save(News news);
 
-    /**
-     *
-     * @param archiveId archive id
-     * @return 해당 Archive 객체
-     */
-    News findBy(Long archiveId);
+    boolean existsNews(Long newsId);
 
-    News update(News archive);
+    News findBy(Long newsId);
 
-    void delete(News archive);
+    News update(News news);
+
+    void delete(News news);
 
     OffsetPageResponse<List<News>> findAllWithOffset(CustomPageRequest customPageRequest);
 

@@ -33,8 +33,7 @@ public class NewsEntity {
     @Column(name = "writer_id", nullable = false)
     private String writerId;
 
-
-    @Column(name = "archive_user_ids")
+    @Column(name = "news_user_ids")
     private String participantIds;
 
     @Column(name = "tag")

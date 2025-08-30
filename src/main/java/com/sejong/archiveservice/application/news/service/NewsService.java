@@ -49,31 +49,31 @@ public class NewsService {
     }
 
     @Transactional
-    public News updateNews(Long archiveId, NewsReqDto newsReqDto, String writerId) {
-        News archive = newsRepository.findBy(archiveId);
-        if (!archive.getWriterId().equals(UserId.of(writerId))) {
-            throw new IllegalArgumentException("아카이브 작성자만 내용을 수정할 수 있습니다.");
+    public News updateNews(Long newsId, NewsReqDto newsReqDto, String writerId) {
+        News news = newsRepository.findBy(newsId);
+        if (!news.getWriterId().equals(UserId.of(writerId))) {
+            throw new IllegalArgumentException("뉴스 작성자만 내용을 수정할 수 있습니다.");
         }
-        archive.update(NewsAssembler.toContent(newsReqDto),
+        news.update(NewsAssembler.toContent(newsReqDto),
                 UserIds.of(newsReqDto.participantIds()),
                 newsReqDto.tags());
-        News updatedNews = newsRepository.update(archive);
+        News updatedNews = newsRepository.update(news);
         newsEventPublisher.publishUpdated(updatedNews);
         return updatedNews;
     }
 
     @Transactional
     public void deleteNews(Long newsId, String writerId) {
-        News archive = newsRepository.findBy(newsId);
-        if (!archive.getWriterId().equals(UserId.of(writerId))) {
-            throw new IllegalArgumentException("아카이브 작성자만 내용을 수정할 수 있습니다.");
+        News news = newsRepository.findBy(newsId);
+        if (!news.getWriterId().equals(UserId.of(writerId))) {
+            throw new IllegalArgumentException("뉴스 작성자만 내용을 삭제할 수 있습니다.");
         }
-        newsRepository.delete(archive);
+        newsRepository.delete(news);
         newsEventPublisher.publishDeleted(newsId);
     }
 
-    public News findById(Long archiveId) {
-        return newsRepository.findBy(archiveId);
+    public News findById(Long newsId) {
+        return newsRepository.findBy(newsId);
     }
 
     public OffsetPageResponse<List<News>> getOffsetNews(OffsetPageReqDto offsetPageReqDto) {
@@ -87,7 +87,7 @@ public class NewsService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean exists(Long archiveId) {
-        return newsRepository.existsArchive(archiveId);
+    public Boolean exists(Long newsId) {
+        return newsRepository.existsNews(newsId);
     }
 }
