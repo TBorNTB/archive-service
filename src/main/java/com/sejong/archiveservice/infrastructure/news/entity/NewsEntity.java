@@ -46,9 +46,10 @@ public class NewsEntity {
     private LocalDateTime updatedAt;
 
     @Builder
-    private NewsEntity(ContentEmbeddable content, String thumbnailPath,
+    private NewsEntity(Long id, ContentEmbeddable content, String thumbnailPath,
                        String writerId, String participantIds, String tags,
                        LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
         this.content = content;
         this.thumbnailPath = thumbnailPath;
         this.writerId = writerId;

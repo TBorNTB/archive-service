@@ -59,6 +59,7 @@ public class CsKnowledgeEntity {
 
     public static CsKnowledgeEntity from(CsKnowledge knowledge) {
         return CsKnowledgeEntity.builder()
+                .id(knowledge.getId())
                 .title(knowledge.getTitle())
                 .content(knowledge.getContent())
                 .techCategory(knowledge.getCategory())

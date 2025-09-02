@@ -33,6 +33,7 @@ public class NewsMapper {
 
     public static NewsEntity toEntity(News news) {
         return NewsEntity.builder()
+                .id(news.getId())
                 .content(ContentEmbeddable.of(news.getContent()))
                 .thumbnailPath(news.getThumbnailPath() == null ? null : news.getThumbnailPath().path())
                 .writerId(news.getWriterId().userId())
