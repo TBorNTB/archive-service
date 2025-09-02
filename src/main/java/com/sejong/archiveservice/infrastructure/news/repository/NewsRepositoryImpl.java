@@ -1,5 +1,7 @@
 package com.sejong.archiveservice.infrastructure.news.repository;
 
+import com.sejong.archiveservice.application.exception.BaseException;
+import com.sejong.archiveservice.application.exception.ExceptionType;
 import com.sejong.archiveservice.core.common.pagination.CursorPageRequest;
 import com.sejong.archiveservice.core.common.pagination.CursorPageResponse;
 import com.sejong.archiveservice.core.common.pagination.CustomPageRequest;
@@ -36,7 +38,7 @@ public class NewsRepositoryImpl implements NewsRepository {
     @Override
     public News findBy(Long newsId) {
         NewsEntity newsEntity = archiveJpaRepository.findById(newsId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 뉴스 ID"));
+                .orElseThrow(() -> new BaseException(ExceptionType.NEWS_NOT_FOUND));
         return NewsMapper.toDomain(newsEntity);
     }
 

@@ -1,5 +1,7 @@
 package com.sejong.archiveservice.application.news.service;
 
+import com.sejong.archiveservice.application.exception.BaseException;
+import com.sejong.archiveservice.application.exception.ExceptionType;
 import com.sejong.archiveservice.application.news.assembler.NewsAssembler;
 import com.sejong.archiveservice.application.news.dto.NewsReqDto;
 import com.sejong.archiveservice.application.pagination.CursorPageReqDto;
@@ -40,11 +42,11 @@ public class NewsService {
 
     private void validateUserExistence(String writerId, List<String> participantIds) {
         if (!userServiceClient.exists(writerId)) {
-            throw new IllegalArgumentException("존재하지 않는 작성자입니다.");
+            throw new BaseException(ExceptionType.USER_NOT_FOUND);
         }
 
         if (!userServiceClient.existsUsers(participantIds)) {
-            throw new IllegalArgumentException("존재하지 않는 참여자가 있습니다.");
+            throw new BaseException(ExceptionType.USER_NOT_FOUND);
         }
     }
 
@@ -52,7 +54,7 @@ public class NewsService {
     public News updateNews(Long newsId, NewsReqDto newsReqDto, String writerId) {
         News news = newsRepository.findBy(newsId);
         if (!news.getWriterId().equals(UserId.of(writerId))) {
-            throw new IllegalArgumentException("뉴스 작성자만 내용을 수정할 수 있습니다.");
+            throw new BaseException(ExceptionType.NOT_NEWS_OWNER);
         }
         news.update(NewsAssembler.toContent(newsReqDto),
                 UserIds.of(newsReqDto.participantIds()),
@@ -66,7 +68,7 @@ public class NewsService {
     public void deleteNews(Long newsId, String writerId) {
         News news = newsRepository.findBy(newsId);
         if (!news.getWriterId().equals(UserId.of(writerId))) {
-            throw new IllegalArgumentException("뉴스 작성자만 내용을 삭제할 수 있습니다.");
+            throw new BaseException(ExceptionType.NOT_NEWS_OWNER);
         }
         newsRepository.delete(news);
         newsEventPublisher.publishDeleted(newsId);
