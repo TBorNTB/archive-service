@@ -83,15 +83,15 @@ public class NewsRepositoryImpl implements NewsRepository {
         List<NewsEntity> resultEntities = hasNext ?
                 entities.subList(0, cursorPageRequest.getSize()) : entities; // Todo: 아예 sql로 limit
 
-        List<News> archives = resultEntities.stream()
+        List<News> news = resultEntities.stream()
                 .map(NewsMapper::toDomain)
                 .toList();
 
         // 다음 커서 계산
-        Long nextCursor = hasNext && !archives.isEmpty() ?
-                archives.get(archives.size() - 1).getId() : null;
+        Long nextCursor = hasNext && !news.isEmpty() ?
+                news.get(news.size() - 1).getId() : null;
 
-        return CursorPageResponse.ok(nextCursor, hasNext, archives);
+        return CursorPageResponse.ok(nextCursor, hasNext, news);
     }
 
     private List<NewsEntity> getCursorBasedEntities(CursorPageRequest request, Pageable pageable) {
