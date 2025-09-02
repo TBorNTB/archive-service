@@ -11,6 +11,7 @@ import com.sejong.archiveservice.core.common.pagination.OffsetPageResponse;
 import com.sejong.archiveservice.core.csknowledge.CsKnowledge;
 import com.sejong.archiveservice.core.csknowledge.CsKnowledgeRepository;
 import com.sejong.archiveservice.core.csknowledge.TechCategory;
+import com.sejong.archiveservice.infrastructure.csknowledge.kafka.CsKnowledgeEventPublisher;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class CsKnowledgeService {
 
     private final CsKnowledgeRepository csKnowledgeRepository;
+    private final CsKnowledgeEventPublisher csKnowledgeEventPublisher;
 
     @Transactional
     public CsKnowledge createCsKnowledge(CsKnowledgeReqDto csKnowledgeReqDto) {
         CsKnowledge csKnowledge = CsKnowledgeAssembler.toCsKnowledge(csKnowledgeReqDto);
-        return csKnowledgeRepository.save(csKnowledge);
+        CsKnowledge savedCsKnowledge = csKnowledgeRepository.save(csKnowledge);
+        csKnowledgeEventPublisher.publishCreated(savedCsKnowledge);
+        return savedCsKnowledge;
     }
 
     @Transactional
@@ -38,13 +42,16 @@ public class CsKnowledgeService {
                 csKnowledgeReqDto, 
                 existingKnowledge.getCreatedAt()
         );
-        return csKnowledgeRepository.update(updatedKnowledge);
+        CsKnowledge savedKnowledge = csKnowledgeRepository.update(updatedKnowledge);
+        csKnowledgeEventPublisher.publishUpdated(savedKnowledge);
+        return savedKnowledge;
     }
 
     @Transactional
     public void deleteCsKnowledge(Long csKnowledgeId) {
         CsKnowledge csKnowledge = csKnowledgeRepository.findById(csKnowledgeId);
         csKnowledgeRepository.delete(csKnowledge);
+        csKnowledgeEventPublisher.publishDeleted(csKnowledgeId);
     }
 
     public CsKnowledge findById(Long csKnowledgeId) {
