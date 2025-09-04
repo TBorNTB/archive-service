@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class CsKnowledgeEventPublisher {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;
-    private final String CS_KNOWLEDGE_EVENTS = "cs-knowledge-events";
+    private final String CS_KNOWLEDGE_EVENTS = "cs-knowledge";
 
     public void publishCreated(CsKnowledge csKnowledge){
         publish(csKnowledge, CREATED);

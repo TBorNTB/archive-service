@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class NewsEventPublisher {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;
-    private final String NEWS_EVENTS = "news-events";
+    private final String NEWS_EVENTS = "news";
 
     public void publishCreated(News news){
         publish(news, CREATED);
