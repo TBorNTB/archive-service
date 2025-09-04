@@ -8,23 +8,18 @@ group = 'com.sejong'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+    toolchain { languageVersion = JavaLanguageVersion.of(21) }
 }
+
+repositories { mavenCentral() }
+
+ext { set('springCloudVersion', "2025.0.0") }
 
 configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+    compileOnly { extendsFrom annotationProcessor }
+    all {
+        exclude group: "org.springframework.boot", module: "spring-boot-properties-migrator"
     }
-}
-
-repositories {
-    mavenCentral()
-}
-
-ext {
-    set('springCloudVersion', "2025.0.0")
 }
 
 dependencies {
@@ -32,8 +27,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+    // DB
     runtimeOnly 'com.h2database:h2'
-    implementation 'mysql:mysql-connector-java:8.0.33'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
     // Eureka Client
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
@@ -41,41 +38,42 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3' // JSON 파싱용
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
-    // Validation (Spring Boot 3.x 이상은 jakarta.validation 사용)
-    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
-
-    // Model Mapper
+    // 🔥 (삭제 권장) implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
     implementation 'org.modelmapper:modelmapper:3.1.1'
 
-    // Config, Bus, Bootstrap
-    implementation 'org.springframework.cloud:spring-cloud-starter-config'
-    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
-//    implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
-
-    // Feign Client
+    // Config / Feign
+//    implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
     // Monitoring
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-    // Lombok
+    // Lombok & metadata
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
-    // Configuration metadata (IDE 지원용)
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    // 스웨거 사용 의존성
+    // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
 
-    // S3 의존성
+    // S3 (Spring Cloud AWS)
     implementation platform('io.awspring.cloud:spring-cloud-aws-dependencies:3.1.1')
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
+
+    // ★ S3Client용 HTTP 클라이언트 추가
+    implementation platform('software.amazon.awssdk:bom:2.21.46')
+    implementation 'software.amazon.awssdk:apache-client'
+    // 또는 가벼운 대안: implementation 'software.amazon.awssdk:url-connection-client'
+
+    // Kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+    // 🔥 (삭제 권장) implementation 'com.fasterxml.jackson.core:jackson-databind'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
 }
 
 dependencyManagement {
@@ -84,6 +82,4 @@ dependencyManagement {
     }
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
+tasks.named('test') { useJUnitPlatform() }

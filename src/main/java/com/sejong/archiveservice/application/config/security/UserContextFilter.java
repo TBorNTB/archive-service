@@ -25,23 +25,25 @@ public class UserContextFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        String userId = request.getHeader(USER_ID_HEADER);
-        String userRole = request.getHeader(USER_ROLE_HEADER);
+        String username = request.getHeader(USER_ID_HEADER);
+        String role = request.getHeader(USER_ROLE_HEADER);
 
-        if (userId != null && userRole != null) {
-            UserContext userContext = UserContext.of(userId, userRole);
+        if (username != null && role != null) {
+            UserContext userContext = UserContext.of(username, role);
 
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
                             userContext,
                             null,
-                            List.of(new SimpleGrantedAuthority("ROLE_" + userRole))
+                            List.of(new SimpleGrantedAuthority("ROLE_" + role))
                     );
 
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            log.debug("User context set: userId={}, userRole={}", userId, userRole);
+            log.debug("User context set: userId={}, userRole={}", username, role);
+            filterChain.doFilter(request, response);
+            return;
         }
 
         filterChain.doFilter(request, response);
