@@ -57,8 +57,8 @@ public class NewsService {
             throw new BaseException(ExceptionType.NOT_NEWS_OWNER);
         }
         news.update(NewsAssembler.toContent(newsReqDto),
-                UserIds.of(newsReqDto.participantIds()),
-                newsReqDto.tags());
+                UserIds.of(newsReqDto.getParticipantIds()),
+                newsReqDto.getTags());
         News updatedNews = newsRepository.update(news);
         newsEventPublisher.publishUpdated(updatedNews);
         return updatedNews;

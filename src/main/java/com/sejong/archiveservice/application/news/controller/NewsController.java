@@ -50,16 +50,8 @@ public class NewsController {
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<NewsResDto> createNews(@RequestBody NewsReqDto newsReqDto) {
         UserContext currentUser = getCurrentUser();
-
-        NewsReqDto updatedReqDto = new NewsReqDto(newsReqDto.title(),
-                newsReqDto.summary(),
-                newsReqDto.content(),
-                newsReqDto.category(),
-                currentUser.getUserId(),
-                newsReqDto.participantIds(),
-                newsReqDto.tags());
-
-        News news = newsService.createNews(updatedReqDto);
+        newsReqDto.setWriter(currentUser.getUsername());
+        News news = newsService.createNews(newsReqDto);
         return ResponseEntity.ok(NewsResDto.from(news));
     }
 
@@ -101,7 +93,7 @@ public class NewsController {
     @Operation(summary = "뉴스 수정")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<NewsResDto> updateNews(@PathVariable Long newsId, @RequestBody NewsReqDto newsReqDto) {
-        String writerId = getCurrentUser().getUserId();
+        String writerId = getCurrentUser().getUsername();
         News news = newsService.updateNews(newsId, newsReqDto, writerId);
         return ResponseEntity.ok(NewsResDto.from(news));
     }
@@ -110,7 +102,7 @@ public class NewsController {
     @Operation(summary = "뉴스 삭제")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Void> deleteNews(@PathVariable Long newsId) {
-        String writerId = getCurrentUser().getUserId();
+        String writerId = getCurrentUser().getUsername();
         newsService.deleteNews(newsId, writerId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
