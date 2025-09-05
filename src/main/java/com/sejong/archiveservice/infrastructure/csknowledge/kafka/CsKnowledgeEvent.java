@@ -20,6 +20,7 @@ public class CsKnowledgeEvent {
     private String id;
     private String title;
     private String content;
+    private String writerId;
     private String category;
     private String createdAt;
 
@@ -27,6 +28,7 @@ public class CsKnowledgeEvent {
         return CsKnowledgeEvent.builder()
                 .id(csKnowledge.getId().toString())
                 .title(csKnowledge.getTitle())
+                .writerId(csKnowledge.getWriterId().userId())
                 .content(csKnowledge.getContent())
                 .category(csKnowledge.getCategory().name())
                 .createdAt(csKnowledge.getCreatedAt().truncatedTo(ChronoUnit.MILLIS).format(FORMATTER))
