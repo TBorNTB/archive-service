@@ -1,6 +1,7 @@
 package com.sejong.archiveservice.application.internal;
 
 import com.sejong.archiveservice.application.news.service.NewsService;
+import com.sejong.archiveservice.infrastructure.client.UserClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -2,6 +2,7 @@ package com.sejong.archiveservice.infrastructure.csknowledge;
 
 import com.sejong.archiveservice.core.csknowledge.CsKnowledge;
 import com.sejong.archiveservice.core.csknowledge.TechCategory;
+import com.sejong.archiveservice.core.user.UserId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -38,6 +39,9 @@ public class CsKnowledgeEntity {
     @Column(nullable = false)
     private String title;
 
+    @Column(name = "writer_id", nullable = false)
+    private String writerId;
+
     @Lob
     private String content;
 
@@ -51,6 +55,7 @@ public class CsKnowledgeEntity {
         return CsKnowledge.builder()
                 .id(id)
                 .title(title)
+                .writerId(UserId.of(writerId))
                 .content(content)
                 .category(techCategory)
                 .createdAt(createdAt)
@@ -61,6 +66,7 @@ public class CsKnowledgeEntity {
         return CsKnowledgeEntity.builder()
                 .id(knowledge.getId())
                 .title(knowledge.getTitle())
+                .writerId(knowledge.getWriterId().userId())
                 .content(knowledge.getContent())
                 .techCategory(knowledge.getCategory())
                 .createdAt(knowledge.getCreatedAt())

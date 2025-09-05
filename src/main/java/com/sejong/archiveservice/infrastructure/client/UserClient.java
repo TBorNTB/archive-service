@@ -1,0 +1,27 @@
+package com.sejong.archiveservice.infrastructure.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.Map;
+
+@FeignClient(name = "user-service", path = "/internal")
+public interface UserClient {
+    @GetMapping("/{username}/exists")
+    ResponseEntity<Boolean> exists(@PathVariable("username") String username);
+
+    @GetMapping("/exists")
+    ResponseEntity<Boolean> existAll(@RequestBody List<String> nicknames);
+
+    @GetMapping("/{username}/exists/multiple")
+    ResponseEntity<Boolean> exists(@PathVariable("username") String username,
+                                   @RequestParam("collaboratorUsernames") List<String> collaboratorUsernames);
+
+    @GetMapping("/all")
+    ResponseEntity<Map<String, String>> getAllUsernames(@RequestParam("usernames") List<String> usernames);
+}

@@ -5,6 +5,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableFeignClients(basePackageClasses = UserServiceClient.class)
+@EnableFeignClients(basePackages = "com.sejong.archiveservice.infrastructure.client")
 public class FeignConfig {
 }
