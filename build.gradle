@@ -46,6 +46,10 @@ dependencies {
     // Config / Feign
 //    implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+
+    // Resilience4j Core 모듈
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.1.0'
 
     // Monitoring
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
