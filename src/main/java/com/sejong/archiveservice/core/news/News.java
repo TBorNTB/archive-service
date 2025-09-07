@@ -1,5 +1,7 @@
 package com.sejong.archiveservice.core.news;
 
+import com.sejong.archiveservice.application.exception.BaseException;
+import com.sejong.archiveservice.application.exception.ExceptionType;
 import com.sejong.archiveservice.core.common.file.Filepath;
 import com.sejong.archiveservice.core.user.UserId;
 import com.sejong.archiveservice.core.user.UserIds;
@@ -49,5 +51,11 @@ public class News {
 
     public void updateFileInfo(Filepath filepath) {
         this.thumbnailPath = filepath;
+    }
+
+    public void validateOwner(UserId userId) {
+        if (!this.writerId.equals(userId)) {
+            throw new BaseException(ExceptionType.NOT_NEWS_OWNER);
+        }
     }
 }

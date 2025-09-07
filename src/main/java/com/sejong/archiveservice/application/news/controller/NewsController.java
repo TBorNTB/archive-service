@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 @RestController
 @RequestMapping("/news")
 @RequiredArgsConstructor
@@ -51,8 +50,9 @@ public class NewsController {
     public ResponseEntity<NewsResDto> createNews(@RequestBody NewsReqDto newsReqDto) {
         UserContext currentUser = getCurrentUser();
         newsReqDto.setWriter(currentUser.getUsername());
-        News news = newsService.createNews(newsReqDto);
-        return ResponseEntity.ok(NewsResDto.from(news));
+
+        NewsResDto response = newsService.createNews(newsReqDto);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/files/presigned-url")
@@ -62,40 +62,45 @@ public class NewsController {
         PreSignedUrl preSignedUrl = fileUploader.generatePreSignedUrl(
                 request.fileName(),
                 request.contentType(), // "image/jpeg"
-                request.fileType() // "image"
+                request.fileType()     // "image"
         );
-
         return ResponseEntity.ok(preSignedUrl);
     }
 
     @GetMapping("/offset")
     @Operation(summary = "뉴스 조회 (오프셋 기반 페이지네이션)")
-    public ResponseEntity<OffsetPageResponse<List<News>>> getOffsetNews(@ModelAttribute @Valid OffsetPageReqDto offsetPageReqDto) {
-        OffsetPageResponse<List<News>> offsetNews = newsService.getOffsetNews(offsetPageReqDto);
+    public ResponseEntity<OffsetPageResponse<List<NewsResDto>>> getOffsetNews(
+            @ModelAttribute @Valid OffsetPageReqDto offsetPageReqDto) {
+
+        OffsetPageResponse<List<NewsResDto>> offsetNews = newsService.getOffsetNews(offsetPageReqDto);
         return ResponseEntity.ok(offsetNews);
     }
 
     @GetMapping("/cursor")
     @Operation(summary = "뉴스 조회 (커서 기반 페이지네이션)")
-    public ResponseEntity<CursorPageResponse<List<News>>> getCursorNews(@ModelAttribute @Valid CursorPageReqDto cursorPageReqDto) {
-        CursorPageResponse<List<News>> cursorNews = newsService.getCursorNews(cursorPageReqDto);
+    public ResponseEntity<CursorPageResponse<List<NewsResDto>>> getCursorNews(
+            @ModelAttribute @Valid CursorPageReqDto cursorPageReqDto) {
+
+        CursorPageResponse<List<NewsResDto>> cursorNews = newsService.getCursorNews(cursorPageReqDto);
         return ResponseEntity.ok(cursorNews);
     }
 
     @GetMapping("/{newsId}")
     @Operation(summary = "뉴스 조회")
     public ResponseEntity<NewsResDto> getNews(@PathVariable Long newsId) {
-        News news = newsService.findById(newsId);
-        return ResponseEntity.ok(NewsResDto.from(news));
+        NewsResDto response = newsService.findById(newsId);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{newsId}")
     @Operation(summary = "뉴스 수정")
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<NewsResDto> updateNews(@PathVariable Long newsId, @RequestBody NewsReqDto newsReqDto) {
+    public ResponseEntity<NewsResDto> updateNews(@PathVariable Long newsId,
+                                                 @RequestBody NewsReqDto newsReqDto) {
         String writerId = getCurrentUser().getUsername();
-        News news = newsService.updateNews(newsId, newsReqDto, writerId);
-        return ResponseEntity.ok(NewsResDto.from(news));
+
+        NewsResDto response = newsService.updateNews(newsId, newsReqDto, writerId);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{newsId}")
@@ -104,7 +109,7 @@ public class NewsController {
     public ResponseEntity<Void> deleteNews(@PathVariable Long newsId) {
         String writerId = getCurrentUser().getUsername();
         newsService.deleteNews(newsId, writerId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     private UserContext getCurrentUser() {
