@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -100,7 +101,7 @@ public class CsKnowledgeController {
     @GetMapping("/offset")
     @Operation(summary = "오프셋 페이지네이션으로 CS 지식 목록 조회")
     public ResponseEntity<OffsetPageResponse<List<CsKnowledgeResDto>>> getOffsetCsKnowledge(
-            @Valid OffsetPageReqDto offsetPageReqDto) {
+            @ParameterObject @Valid OffsetPageReqDto offsetPageReqDto) {
         OffsetPageResponse<List<CsKnowledgeResDto>> response = csKnowledgeService.getOffsetCsKnowledge(offsetPageReqDto);
         return ResponseEntity.ok(response);
     }
@@ -108,7 +109,7 @@ public class CsKnowledgeController {
     @GetMapping("/cursor")
     @Operation(summary = "커서 페이지네이션으로 CS 지식 목록 조회")
     public ResponseEntity<CursorPageResponse<List<CsKnowledgeResDto>>> getCursorCsKnowledge(
-            @Valid CursorPageReqDto cursorPageReqDto) {
+            @ParameterObject @Valid CursorPageReqDto cursorPageReqDto) {
         CursorPageResponse<List<CsKnowledgeResDto>> response = csKnowledgeService.getCursorCsKnowledge(cursorPageReqDto);
         return ResponseEntity.ok(response);
     }

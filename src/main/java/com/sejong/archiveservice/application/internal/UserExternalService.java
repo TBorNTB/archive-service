@@ -81,7 +81,7 @@ public class UserExternalService {
         return response.getBody();
     }
 
-    private void getAllUsernamesFallback(List<String> usernames, Throwable t) {
+    private Map<String, String>  getAllUsernamesFallback(List<String> usernames, Throwable t) {
         log.info("getAllUsernamesFallback 작동");
         if (t instanceof ApiException) {
             throw (ApiException) t;

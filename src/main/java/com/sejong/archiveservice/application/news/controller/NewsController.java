@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -70,7 +71,7 @@ public class NewsController {
     @GetMapping("/offset")
     @Operation(summary = "뉴스 조회 (오프셋 기반 페이지네이션)")
     public ResponseEntity<OffsetPageResponse<List<NewsResDto>>> getOffsetNews(
-            @ModelAttribute @Valid OffsetPageReqDto offsetPageReqDto) {
+            @ParameterObject @Valid OffsetPageReqDto offsetPageReqDto) {
 
         OffsetPageResponse<List<NewsResDto>> offsetNews = newsService.getOffsetNews(offsetPageReqDto);
         return ResponseEntity.ok(offsetNews);
@@ -79,7 +80,7 @@ public class NewsController {
     @GetMapping("/cursor")
     @Operation(summary = "뉴스 조회 (커서 기반 페이지네이션)")
     public ResponseEntity<CursorPageResponse<List<NewsResDto>>> getCursorNews(
-            @ModelAttribute @Valid CursorPageReqDto cursorPageReqDto) {
+            @ParameterObject @Valid CursorPageReqDto cursorPageReqDto) {
 
         CursorPageResponse<List<NewsResDto>> cursorNews = newsService.getCursorNews(cursorPageReqDto);
         return ResponseEntity.ok(cursorNews);
