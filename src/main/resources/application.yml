@@ -9,7 +9,7 @@ spring:
     name: archive-service
 
   datasource:
-    url: jdbc:mysql://mysql2:3306/archive_schema?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://${EC2_HOST_INFRA}:3307/archive_schema?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
@@ -34,7 +34,7 @@ spring:
         order_updates: true
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${EC2_HOST_INFRA}:9092
     properties:
       acks: all
       enable.idempotence: true
@@ -60,6 +60,15 @@ spring:
         secret-key: ${S3_SECRET_KEY}
       stack:
         auto: false
+
+    elasticsearch:
+      uris: http://${EC2_HOST_INFRA}:9200
+      connection-timeout: 5s
+      socket-timeout: 30s
+    data:
+      elasticsearch:
+        repositories:
+          enabled: true
 
     discovery:
       enabled: true

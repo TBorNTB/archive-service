@@ -38,6 +38,15 @@ spring:
       linger-ms: 20       # 소량 배치
       batch-size: 32768
 
+  elasticsearch:
+    uris: http://localhost:9200
+    connection-timeout: 5s
+    socket-timeout: 30s
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+
   cloud:
     aws:
       region:
