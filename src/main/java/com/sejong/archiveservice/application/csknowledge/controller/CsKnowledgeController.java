@@ -38,7 +38,7 @@ public class CsKnowledgeController {
     private final CsKnowledgeService csKnowledgeService;
 
     @PostMapping
-    @Operation(summary = "CS 지식 생성")
+    @Operation(summary = "CS 지식 생성 ")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<CsKnowledgeResDto> createCsKnowledge(@Valid @RequestBody CsKnowledgeReqDto csKnowledgeReqDto) {
         UserContext currentUser = getCurrentUser();

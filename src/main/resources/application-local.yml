@@ -38,6 +38,7 @@ spring:
       linger-ms: 20       # 소량 배치
       batch-size: 32768
 
+
   cloud:
     aws:
       region:
