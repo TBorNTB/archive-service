@@ -4,7 +4,7 @@ import com.sejong.archiveservice.core.news.News;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.Map;
 public record NewsResDto(
         Long id,
         String title,
@@ -13,7 +13,9 @@ public record NewsResDto(
         String category,
         String thumbnailPath,
         String writerId,
+        String writerNickname,
         List<String> participantIds,
+        List<String> participantNicknames,
         List<String> tags,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
@@ -27,7 +29,29 @@ public record NewsResDto(
                 archive.getContent().getCategory().name(),
                 archive.getThumbnailPath() != null ? archive.getThumbnailPath().path() : null,
                 archive.getWriterId().userId(),
-                extractUserIds(archive.getParticipantIds().toString()),
+                null, // writerNickname 없음
+                archive.getParticipantIds().toList(),
+                List.of(), // participantNicknames 없음
+                archive.getTags(),
+                archive.getCreatedAt(),
+                archive.getUpdatedAt()
+        );
+    }
+
+    public static NewsResDto from(News archive, Map<String, String> usernamesMap) {
+        return new NewsResDto(
+                archive.getId(),
+                archive.getContent().getTitle(),
+                archive.getContent().getSummary(),
+                archive.getContent().getContent(),
+                archive.getContent().getCategory().name(),
+                archive.getThumbnailPath() != null ? archive.getThumbnailPath().path() : null,
+                archive.getWriterId().userId(),
+                usernamesMap.getOrDefault(archive.getWriterId().userId(), archive.getWriterId().userId()),
+                archive.getParticipantIds().toList(),
+                archive.getParticipantIds().toList().stream()
+                        .map(userId -> usernamesMap.getOrDefault(userId, userId))
+                        .toList(),
                 archive.getTags(),
                 archive.getCreatedAt(),
                 archive.getUpdatedAt()
