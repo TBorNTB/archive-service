@@ -61,15 +61,6 @@ spring:
       stack:
         auto: false
 
-    elasticsearch:
-      uris: http://${EC2_HOST_INFRA}:9200
-      connection-timeout: 5s
-      socket-timeout: 30s
-    data:
-      elasticsearch:
-        repositories:
-          enabled: true
-
     discovery:
       enabled: true
     loadbalancer:
