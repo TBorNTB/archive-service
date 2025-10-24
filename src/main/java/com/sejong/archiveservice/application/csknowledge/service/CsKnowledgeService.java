@@ -4,6 +4,7 @@ import com.sejong.archiveservice.application.csknowledge.assembler.CsKnowledgeAs
 import com.sejong.archiveservice.application.csknowledge.dto.CsKnowledgeReqDto;
 import com.sejong.archiveservice.application.csknowledge.dto.CsKnowledgeResDto;
 import com.sejong.archiveservice.application.internal.UserExternalService;
+import com.sejong.archiveservice.application.internal.response.PostLikeCheckResponse;
 import com.sejong.archiveservice.application.pagination.CursorPageReqDto;
 import com.sejong.archiveservice.application.pagination.OffsetPageReqDto;
 import com.sejong.archiveservice.core.common.extractor.ExtractorUsername;
@@ -44,7 +45,7 @@ public class CsKnowledgeService {
     }
 
     @Transactional
-    public CsKnowledgeResDto updateCsKnowledge(Long csKnowledgeId, CsKnowledgeReqDto csKnowledgeReqDto,String username) {
+    public CsKnowledgeResDto updateCsKnowledge(Long csKnowledgeId, CsKnowledgeReqDto csKnowledgeReqDto, String username) {
         CsKnowledge existingKnowledge = csKnowledgeRepository.findById(csKnowledgeId);
         existingKnowledge.validateOwnerPermission(username);
 
@@ -62,9 +63,9 @@ public class CsKnowledgeService {
     }
 
     @Transactional
-    public void deleteCsKnowledge(Long csKnowledgeId, String username) {
+    public void deleteCsKnowledge(Long csKnowledgeId, String username, String userRole) {
         CsKnowledge csKnowledge = csKnowledgeRepository.findById(csKnowledgeId);
-        csKnowledge.validateOwnerPermission(username);
+        csKnowledge.validateOwnerPermission(username, userRole);
         csKnowledgeRepository.delete(csKnowledge);
         csKnowledgeEventPublisher.publishDeleted(csKnowledgeId);
     }
@@ -74,8 +75,20 @@ public class CsKnowledgeService {
         return resolveUsername(csKnowledge);
     }
 
+    @Transactional(readOnly = true)
     public Boolean exists(Long csKnowledgeId) {
         return csKnowledgeRepository.existsById(csKnowledgeId);
+    }
+
+    @Transactional(readOnly = true)
+    public PostLikeCheckResponse checkCS(Long csKnowledgeId) {
+        boolean exists = csKnowledgeRepository.existsById(csKnowledgeId);
+        if(exists){
+            CsKnowledge csKnowledge = csKnowledgeRepository.findById(csKnowledgeId);
+            return PostLikeCheckResponse.hasOfCS(csKnowledge, true);
+        }
+
+        return PostLikeCheckResponse.hasNotOf();
     }
 
     public List<CsKnowledgeResDto> findAllByTechCategory(TechCategory techCategory) {
