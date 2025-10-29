@@ -1,6 +1,7 @@
 package com.sejong.archiveservice.application.news.service;
 
 import com.sejong.archiveservice.application.internal.UserExternalService;
+import com.sejong.archiveservice.application.internal.response.PostLikeCheckResponse;
 import com.sejong.archiveservice.application.news.assembler.NewsAssembler;
 import com.sejong.archiveservice.application.news.dto.NewsReqDto;
 import com.sejong.archiveservice.application.news.dto.NewsResDto;
@@ -23,6 +24,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -103,8 +105,13 @@ public class NewsService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean exists(Long newsId) {
-        return newsRepository.existsNews(newsId);
+    public PostLikeCheckResponse checkNews(Long newsId) {
+        boolean exists = newsRepository.existsNews(newsId);
+        if (exists) {
+            News news = newsRepository.findBy(newsId);
+            return PostLikeCheckResponse.hasOfNews(news, true);
+        }
+        return PostLikeCheckResponse.hasNotOf();
     }
 
     private NewsResDto resolveUsernames(News news) {

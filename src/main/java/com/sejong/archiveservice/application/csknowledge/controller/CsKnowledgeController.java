@@ -13,8 +13,10 @@ import com.sejong.archiveservice.core.csknowledge.TechCategory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
@@ -62,7 +64,7 @@ public class CsKnowledgeController {
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Void> deleteCsKnowledge(@PathVariable Long csKnowledgeId) {
         UserContext currentUser = getCurrentUser();
-        csKnowledgeService.deleteCsKnowledge(csKnowledgeId,currentUser.getUsername());
+        csKnowledgeService.deleteCsKnowledge(csKnowledgeId, currentUser.getUsername(), currentUser.getUserRole());
         return ResponseEntity.noContent().build();
     }
 
