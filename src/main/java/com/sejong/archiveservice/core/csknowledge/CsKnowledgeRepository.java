@@ -28,4 +28,6 @@ public interface CsKnowledgeRepository {
     OffsetPageResponse<List<CsKnowledge>> findAllWithOffset(CustomPageRequest customPageRequest);
     
     CursorPageResponse<List<CsKnowledge>> findAllWithCursor(CursorPageRequest cursorPageRequest);
+
+    Long getCsCount();
 }

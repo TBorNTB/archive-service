@@ -27,4 +27,7 @@ public interface ArchiveJpaRepository extends JpaRepository<NewsEntity, Long> {
 
     @Query("SELECT a FROM NewsEntity a ORDER BY a.id ASC")
     List<NewsEntity> findFirstPageAsc(Pageable pageable);
+
+    @Query("SELECT count(ne) FROM NewsEntity ne")
+    Long getNewsCount();
 }

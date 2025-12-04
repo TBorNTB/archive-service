@@ -94,6 +94,11 @@ public class NewsRepositoryImpl implements NewsRepository {
         return CursorPageResponse.ok(nextCursor, hasNext, news);
     }
 
+    @Override
+    public Long getNewsCount() {
+        return archiveJpaRepository.getNewsCount();
+    }
+
     private List<NewsEntity> getCursorBasedEntities(CursorPageRequest request, Pageable pageable) {
         boolean isDesc = request.getDirection() == CursorPageRequest.SortDirection.DESC;
 

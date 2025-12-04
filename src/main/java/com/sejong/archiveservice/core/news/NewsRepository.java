@@ -22,4 +22,6 @@ public interface NewsRepository {
     OffsetPageResponse<List<News>> findAllWithOffset(CustomPageRequest customPageRequest);
 
     CursorPageResponse<List<News>> findAllWithCursor(CursorPageRequest cursorPageRequest);
+
+    Long getNewsCount();
 }

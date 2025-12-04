@@ -29,4 +29,7 @@ public interface CsKnowledgeJpaRepository extends JpaRepository<CsKnowledgeEntit
 """, nativeQuery = true)
     Optional<CsKnowledgeEntity> findRandomUnsent(@Param("categoryName") String categoryName,
                                                  @Param("email") String email);
+
+    @Query("SELECT count(cse) FROM CsKnowledgeEntity cse")
+    Long getCsCount();
 }

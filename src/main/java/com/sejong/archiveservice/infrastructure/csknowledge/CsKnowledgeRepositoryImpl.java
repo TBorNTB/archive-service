@@ -9,8 +9,10 @@ import com.sejong.archiveservice.core.common.pagination.OffsetPageResponse;
 import com.sejong.archiveservice.core.csknowledge.CsKnowledge;
 import com.sejong.archiveservice.core.csknowledge.CsKnowledgeRepository;
 import com.sejong.archiveservice.core.csknowledge.TechCategory;
+
 import java.util.List;
 import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -81,7 +83,7 @@ public class CsKnowledgeRepositoryImpl implements CsKnowledgeRepository {
         );
 
         Page<CsKnowledgeEntity> page = repository.findAll(pageable);
-        
+
         List<CsKnowledge> knowledges = page.stream()
                 .map(CsKnowledgeEntity::toDomain)
                 .toList();
@@ -92,7 +94,7 @@ public class CsKnowledgeRepositoryImpl implements CsKnowledgeRepository {
     @Override
     public CursorPageResponse<List<CsKnowledge>> findAllWithCursor(CursorPageRequest cursorPageRequest) {
         Pageable pageable = PageRequest.of(0, cursorPageRequest.getSize() + 1);
-        
+
         List<CsKnowledgeEntity> entities;
         if (cursorPageRequest.getCursor() == null) {
             entities = repository.findAll(pageable).getContent();
@@ -101,16 +103,21 @@ public class CsKnowledgeRepositoryImpl implements CsKnowledgeRepository {
         }
 
         boolean hasNext = entities.size() > cursorPageRequest.getSize();
-        
+
         List<CsKnowledge> knowledges = entities.stream()
                 .limit(cursorPageRequest.getSize())
                 .map(CsKnowledgeEntity::toDomain)
                 .toList();
 
-        Long nextCursor = hasNext && !knowledges.isEmpty() 
-                ? knowledges.get(knowledges.size() - 1).getId() 
+        Long nextCursor = hasNext && !knowledges.isEmpty()
+                ? knowledges.get(knowledges.size() - 1).getId()
                 : null;
 
         return CursorPageResponse.ok(nextCursor, hasNext, knowledges);
+    }
+
+    @Override
+    public Long getCsCount() {
+        return repository.getCsCount();
     }
 }

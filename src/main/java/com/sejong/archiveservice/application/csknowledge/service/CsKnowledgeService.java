@@ -140,4 +140,9 @@ public class CsKnowledgeService {
                 .map(cs -> CsKnowledgeResDto.from(cs, usernamesMap.get(cs.getWriterId().userId())))
                 .toList();
     }
+
+    @Transactional(readOnly = true)
+    public Long getCsCount() {
+        return csKnowledgeRepository.getCsCount();
+    }
 }

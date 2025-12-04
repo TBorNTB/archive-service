@@ -119,4 +119,10 @@ public class NewsService {
         Map<String, String> usernamesMap = userExternalService.getAllUsernames(usernames);
         return NewsResDto.from(news, usernamesMap);
     }
+
+    @Transactional(readOnly = true)
+    public Long getNewsCount() {
+        Long count = newsRepository.getNewsCount();
+        return count;
+    }
 }

@@ -30,6 +30,20 @@ public class NewsInternalController {
     @Operation(summary = "cs 지식 존재 검증")
     public ResponseEntity<PostLikeCheckResponse> checkCSKnowledgeId(@PathVariable("csKnowledgeId") Long csKnowledgeId) {
         PostLikeCheckResponse response = csKnowledgeService.checkCS(csKnowledgeId);
-      return ResponseEntity.ok(response);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/news/count")
+    @Operation(summary = "Internal news 갯수 조회")
+    public ResponseEntity<Long> getNewsCount() {
+        Long count = newsService.getNewsCount();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/cs/count")
+    @Operation(summary = "Internal CS 갯수 조회")
+    public ResponseEntity<Long> getCsCount() {
+        Long count = csKnowledgeService.getCsCount();
+        return ResponseEntity.ok(count);
     }
 }
