@@ -1,14 +1,14 @@
-package com.sejong.archiveservice.infrastructure.client;
+package com.sejong.archiveservice.client;
 
+import com.sejong.archiveservice.client.dto.UserNameInfo;
+import java.util.List;
+import java.util.Map;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
-import java.util.Map;
 
 @FeignClient(name = "user-service", path = "/internal")
 public interface UserClient {
@@ -22,6 +22,6 @@ public interface UserClient {
     ResponseEntity<Boolean> exists(@PathVariable("username") String username,
                                    @RequestParam("collaboratorUsernames") List<String> collaboratorUsernames);
 
-    @GetMapping("/all")
-    ResponseEntity<Map<String, String>> getAllUsernames(@RequestParam("usernames") List<String> usernames);
+    @GetMapping("/un-info")
+    ResponseEntity<Map<String, UserNameInfo>> getUserNameInfos(@RequestParam("usernames") List<String> usernames);
 }

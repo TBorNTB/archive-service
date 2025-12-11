@@ -1,19 +1,19 @@
 package com.sejong.archiveservice.application.internal;
 
 
+import static com.sejong.archiveservice.application.exception.ExceptionType.EXTERNAL_SERVICE_ERROR;
+
 import com.sejong.archiveservice.application.exception.BaseException;
-import com.sejong.archiveservice.infrastructure.client.UserClient;
+import com.sejong.archiveservice.client.UserClient;
+import com.sejong.archiveservice.client.dto.UserNameInfo;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.errors.ApiException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Map;
-
-import static com.sejong.archiveservice.application.exception.ExceptionType.EXTERNAL_SERVICE_ERROR;
 
 @Component
 @RequiredArgsConstructor
@@ -21,23 +21,6 @@ import static com.sejong.archiveservice.application.exception.ExceptionType.EXTE
 public class UserExternalService {
 
     private final UserClient userClient;
-
-    @CircuitBreaker(name = "user-circuit-breaker", fallbackMethod = "validateExistenceFallback")
-    public void validateExistence(List<String> userNicknames) {
-        ResponseEntity<Boolean> response = userClient.existAll(userNicknames);
-        if (response.getBody() != Boolean.TRUE) {
-            throw new BaseException(EXTERNAL_SERVICE_ERROR);
-        }
-    }
-
-    private void validateExistenceFallback(List<String> userNames, Throwable t) {
-        log.info("fallback method is called. userNames: {}", userNames);
-        if (t instanceof ApiException) {
-            throw (ApiException) t;
-        }
-
-        throw new BaseException(EXTERNAL_SERVICE_ERROR);
-    }
 
     @CircuitBreaker(name = "user-circuit-breaker", fallbackMethod = "validateExistenceFallback")
     public void validateExistence(String username, List<String> collaboratorUsernames) {
@@ -73,9 +56,9 @@ public class UserExternalService {
     }
 
     @CircuitBreaker(name = "user-circuit-breaker", fallbackMethod = "getAllUsernamesFallback")
-    public Map<String, String> getAllUsernames(List<String> usernames) {
-        ResponseEntity<Map<String, String>> response = userClient.getAllUsernames(usernames);
-        if (response.getBody() == null) {
+    public Map<String, UserNameInfo> getAllUsernames(List<String> usernames) {
+        ResponseEntity<Map<String, UserNameInfo>> response = userClient.getUserNameInfos(usernames);
+        if (response.getBody() == null || response.getBody().isEmpty()) {
             throw new BaseException(EXTERNAL_SERVICE_ERROR);
         }
         return response.getBody();

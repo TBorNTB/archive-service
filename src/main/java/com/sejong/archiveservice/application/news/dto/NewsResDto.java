@@ -1,5 +1,6 @@
 package com.sejong.archiveservice.application.news.dto;
 
+import com.sejong.archiveservice.client.dto.UserNameInfo;
 import com.sejong.archiveservice.core.news.News;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -38,7 +39,7 @@ public record NewsResDto(
         );
     }
 
-    public static NewsResDto from(News archive, Map<String, String> usernamesMap) {
+    public static NewsResDto from(News archive, Map<String, UserNameInfo> usernamesMap) {
         return new NewsResDto(
                 archive.getId(),
                 archive.getContent().getTitle(),
@@ -47,10 +48,10 @@ public record NewsResDto(
                 archive.getContent().getCategory().name(),
                 archive.getThumbnailPath() != null ? archive.getThumbnailPath().path() : null,
                 archive.getWriterId().userId(),
-                usernamesMap.getOrDefault(archive.getWriterId().userId(), archive.getWriterId().userId()),
+                usernamesMap.get(archive.getWriterId().userId()).nickname(),
                 archive.getParticipantIds().toList(),
                 archive.getParticipantIds().toList().stream()
-                        .map(userId -> usernamesMap.getOrDefault(userId, userId))
+                        .map(userId -> usernamesMap.get(userId).nickname())
                         .toList(),
                 archive.getTags(),
                 archive.getCreatedAt(),

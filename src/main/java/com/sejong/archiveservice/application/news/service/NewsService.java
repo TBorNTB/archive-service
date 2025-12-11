@@ -7,6 +7,7 @@ import com.sejong.archiveservice.application.news.dto.NewsReqDto;
 import com.sejong.archiveservice.application.news.dto.NewsResDto;
 import com.sejong.archiveservice.application.pagination.CursorPageReqDto;
 import com.sejong.archiveservice.application.pagination.OffsetPageReqDto;
+import com.sejong.archiveservice.client.dto.UserNameInfo;
 import com.sejong.archiveservice.core.common.extractor.ExtractorUsername;
 import com.sejong.archiveservice.core.common.pagination.CursorPageRequest;
 import com.sejong.archiveservice.core.common.pagination.CursorPageResponse;
@@ -17,10 +18,8 @@ import com.sejong.archiveservice.core.news.NewsRepository;
 import com.sejong.archiveservice.core.user.UserId;
 import com.sejong.archiveservice.core.user.UserIds;
 import com.sejong.archiveservice.infrastructure.news.kafka.NewsEventPublisher;
-
 import java.util.List;
 import java.util.Map;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -116,7 +115,7 @@ public class NewsService {
 
     private NewsResDto resolveUsernames(News news) {
         List<String> usernames = ExtractorUsername.FromNewses(news);
-        Map<String, String> usernamesMap = userExternalService.getAllUsernames(usernames);
+        Map<String, UserNameInfo> usernamesMap = userExternalService.getAllUsernames(usernames);
         return NewsResDto.from(news, usernamesMap);
     }
 
